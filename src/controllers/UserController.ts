@@ -1,30 +1,31 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import { IController } from "../contracts/IController";
-import { UserService } from "../services/UserService";
-import { IUserService } from "../contracts/Services/IUserService";
+import { AlarmRecordService } from "../services/AlarmRecordService";
+import { BaseEntity } from "../entity/BaseEntity";
+import { ICrudService } from "../contracts/Services/ICrudService";
 
-export class UserController implements IController {
+export class AlarmRecordController implements IController {
 
-    private userService: IUserService = UserService.getInstance();
+    private alarmRecordService: ICrudService<BaseEntity> = AlarmRecordService.getInstance();
     
     async get(request: Request, response: Response, next: NextFunction) {
-        return this.userService.get();
+        return this.alarmRecordService.get();
     }
 
     async getById(request: Request, response: Response, next: NextFunction) {
-        return this.userService.getById(request.params.id);
+        return this.alarmRecordService.getById(request.params.id);
     }
 
     async add(request: Request, response: Response, next: NextFunction) {
-        return this.userService.add(request.body);
+        return this.alarmRecordService.add(request.body);
     }
 
     async update(request: Request, response: Response, next: NextFunction) {
-        return this.userService.update(request.body);
+        return this.alarmRecordService.update(request.body);
     }
 
     async delete(request: Request, response: Response, next: NextFunction) {
-        return this.userService.delete(request.params.id);
+        return this.alarmRecordService.delete(request.params.id);
     }
 
 }
