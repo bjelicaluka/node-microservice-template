@@ -1,10 +1,6 @@
 {
-   "type": "mongodb",
-   "host": "mongodb",
-   "port": 27017,
-   "username": "root",
-   "password": "1234",
-   "database": "node_db",
+   "type": "sqlite",
+   "database": "./database.sql",
    "synchronize": true,
    "authSource": "admin",
    "logging": false,

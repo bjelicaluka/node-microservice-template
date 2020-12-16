@@ -1,5 +1,5 @@
 import { IController } from "./contracts/IController";
-import { UserRoutes } from "./routes/UserRoutes";
+import { AlarmRoutes } from "./routes/AlarmRoutes";
 
 export interface Route {
     method: string;
@@ -13,5 +13,5 @@ export const Routes: Route[] = [];
 
 // Attach All Routes
 [
-    UserRoutes
+    AlarmRoutes
 ].forEach((routes: Route[]) => Routes.push(...routes))

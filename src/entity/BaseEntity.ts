@@ -1,12 +1,14 @@
-import { Entity, ObjectIdColumn, ObjectID, Column } from "typeorm";
+import { Entity, ObjectIdColumn, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class BaseEntity {
 
-  @ObjectIdColumn()
-  id: ObjectID;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column()
+  @Column({
+    default: true
+  })
   isActive: boolean;
 
 }

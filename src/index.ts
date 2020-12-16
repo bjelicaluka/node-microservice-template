@@ -6,6 +6,8 @@ import { AuthMiddlewareInstaller } from "./installers/AuthMiddlewareInstaller";
 import { RoutesInstaller } from "./installers/RoutesInstaller";
 import { IInstaller } from "./contracts/IInstaller";
 
+const PORT = 3000;
+
 // Create connection to the datastore
 createConnection().then(async () => {
 
@@ -21,8 +23,8 @@ createConnection().then(async () => {
     installers.forEach(i => i.install());
 
     // Start the app
-    app.listen(3001);
-    console.log("Express server has started on port 3000.");
+    app.listen(PORT);
+    console.log(`Express server has started on port ${PORT}.`);
 
 }).catch(error => console.log(error));
 

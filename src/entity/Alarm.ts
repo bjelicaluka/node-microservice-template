@@ -6,9 +6,6 @@ import { AlarmType } from "./AlarmType";
 @Entity()
 export class Alarm extends BaseEntity {
 
-  @ObjectIdColumn()
-  id: ObjectID;
-
   @ManyToMany(() => AlarmSensor, alarmSensor => alarmSensor.alarms)
   alarmSensors: AlarmSensor[];
 

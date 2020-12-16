@@ -6,9 +6,6 @@ import { AlarmRecord } from "./AlarmRecord";
 @Entity()
 export class AlarmSensor extends BaseEntity {
 
-  @ObjectIdColumn()
-  id: ObjectID;
-
   @Column()
   sensorId: string;
 
