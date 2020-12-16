@@ -1,0 +1,25 @@
+{
+   "type": "mongodb",
+   "host": "mongodb",
+   "port": 27017,
+   "username": "root",
+   "password": "1234",
+   "database": "node_db",
+   "synchronize": true,
+   "authSource": "admin",
+   "logging": false,
+   "entities": [
+      "src/entity/**/*.ts"
+   ],
+   "migrations": [
+      "src/migration/**/*.ts"
+   ],
+   "subscribers": [
+      "src/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+   }
+}
