@@ -1,4 +1,6 @@
 import { IController } from "./contracts/IController";
+import { AlarmRecordRoutes } from "./routes/AlarmRecordRoutes";
+import { AlarmSensorRoutes } from "./routes/AlarmSensorRoutes";
 import { AlarmRoutes } from "./routes/AlarmRoutes";
 
 export interface Route {
@@ -13,5 +15,7 @@ export const Routes: Route[] = [];
 
 // Attach All Routes
 [
-    AlarmRoutes
+    AlarmRoutes,
+    AlarmSensorRoutes,
+    AlarmRecordRoutes
 ].forEach((routes: Route[]) => Routes.push(...routes))

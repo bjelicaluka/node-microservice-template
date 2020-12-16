@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, ObjectID, Column, ManyToMany } from "typeorm";
+import { Entity, Column, ManyToMany } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { AlarmSensor } from "./AlarmSensor";
 import { AlarmType } from "./AlarmType";
