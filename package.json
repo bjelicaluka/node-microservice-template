@@ -4,20 +4,23 @@
    "description": "Project template for future microservices in Node.js.",
    "devDependencies": {
       "@types/node": "^8.0.29",
+      "@vercel/ncc": "^0.25.1",
       "sqlite3": "^5.0.0",
       "ts-node": "3.3.0",
-      "typescript": "3.3.3333"
+      "typescript": "^4.1.3"
    },
    "dependencies": {
       "axios": "^0.21.0",
       "body-parser": "^1.18.1",
       "express": "^4.15.4",
+      "http": "0.0.1-security",
       "mongodb": "^3.0.8",
       "reflect-metadata": "^0.1.10",
+      "socket.io": "^3.0.4",
       "typeorm": "0.2.29"
    },
    "scripts": {
       "start": "ts-node src/index.ts",
-      "build": "tsc"
+      "build": "ncc build src/index.ts -o build"
    }
 }
