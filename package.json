@@ -15,12 +15,13 @@
       "express": "^4.15.4",
       "http": "0.0.1-security",
       "mongodb": "^3.0.8",
+      "mysql": "^2.18.1",
       "reflect-metadata": "^0.1.10",
       "socket.io": "^3.0.4",
       "typeorm": "0.2.29"
    },
    "scripts": {
       "start": "ts-node src/index.ts",
-      "build": "ncc build src/index.ts -o build"
+      "build": "ncc build src/index.ts -m -o build"
    }
 }

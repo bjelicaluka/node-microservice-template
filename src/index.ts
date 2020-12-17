@@ -5,7 +5,7 @@ import { MiddlewareInstaller } from "./installers/MiddlewareInstaller";
 import { AuthMiddlewareInstaller } from "./installers/AuthMiddlewareInstaller";
 import { RoutesInstaller } from "./installers/RoutesInstaller";
 import { IInstaller } from "./contracts/IInstaller";
-import { ORM_CONFIG } from "./config";
+import { ORM_CONFIG, RemoteServicesInfo } from "./config";
 import { SocketIOServer } from "./socket-io/SocketIOServer";
 
 const PORT = 4000;
@@ -38,5 +38,6 @@ createConnection(ORM_CONFIG).then(async () => {
   //
   httpServer.listen(PORT);
   console.log(`Server is listening on port ${PORT}.`);
+  console.log(`Auth API url: ${RemoteServicesInfo.AuthService.API_URL}`);
 
 }).catch(error => console.log(error));

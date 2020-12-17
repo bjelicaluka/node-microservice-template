@@ -6,23 +6,27 @@ import { AlarmSensor } from "./entity/AlarmSensor";
 
 interface ServicesInfo {
     AuthService: {
-        API: string;
-        PORT: number;
+        API_URL: string;
         ROUTE: string;
     };
 }
 
 export const RemoteServicesInfo: ServicesInfo = {
     AuthService: {
-        API: "http://localhost",
-        PORT: 5000,
+        API_URL: process.env.AUTH_SERVICE_URL || null,
         ROUTE: "/User/validate"
     }
 };
 
 export const ORM_CONFIG: ConnectionOptions = {
-    type: "sqlite",
-    database: "../database.sql",
+    // type: "sqlite",
+    // database: "../database.sql",
+    type: "mysql",
+    host: "localhost",
+    port: 3306,
+    username: "root",
+    password: "1234",
+    database: "alarms_db",
     synchronize: true,
     logging: false,
     entities: [
