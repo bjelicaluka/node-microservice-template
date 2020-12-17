@@ -22,7 +22,7 @@ export const ORM_CONFIG: ConnectionOptions = {
     // type: "sqlite",
     // database: "../database.sql",
     type: "mysql",
-    host: "localhost",
+    host: "mariadb-alarm",
     port: 3306,
     username: "root",
     password: "1234",
