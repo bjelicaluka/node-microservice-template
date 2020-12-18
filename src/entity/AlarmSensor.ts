@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, ManyToMany } from "typeorm";
+import { Entity, Column, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Alarm } from "./Alarm";
 import { AlarmRecord } from "./AlarmRecord";
@@ -9,10 +9,16 @@ export class AlarmSensor extends BaseEntity {
   @Column()
   sensorId: string;
 
-  @ManyToMany(() => Alarm, alarm => alarm.alarmSensors)
+  @ManyToMany(() => Alarm, alarm => alarm.alarmSensors, {
+    nullable: false,
+    eager: true,
+  })
+  @JoinTable()
   alarms: Alarm;
 
-  @OneToMany(() => AlarmRecord, alarmRecord => alarmRecord.alarmSensor)
+  @OneToMany(() => AlarmRecord, alarmRecord => alarmRecord.alarmSensor, {
+    nullable: false,
+  })
   alarmRecords: AlarmRecord[];
 
   @Column()

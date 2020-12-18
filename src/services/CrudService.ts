@@ -1,12 +1,13 @@
+import { Repository } from "typeorm";
 import { ICrudService } from "../contracts/Services/ICrudService";
 import { BaseEntity } from "../entity/BaseEntity";
 
 export class CrudService implements ICrudService<BaseEntity> {
     
-    protected repository;
+    protected repository: Repository<BaseEntity>;
 
     async get(): Promise<BaseEntity[]> {
-        return this.repository.find();
+        return this.repository.find({ loadEagerRelations: true });
     }
 
     async getById(id: string): Promise<BaseEntity> {
