@@ -3,6 +3,7 @@
    "version": "1.0.0",
    "description": "Project template for future microservices in Node.js.",
    "devDependencies": {
+      "@types/express": "^4.17.9",
       "@types/node": "^8.0.29",
       "@vercel/ncc": "^0.25.1",
       "sqlite3": "^5.0.0",
