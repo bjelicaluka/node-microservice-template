@@ -14,7 +14,7 @@ interface ServicesInfo {
 export const RemoteServicesInfo: ServicesInfo = {
     AuthService: {
         API_URL: process.env.AUTH_SERVICE_URL || null,
-        ROUTE: "/User/validate"
+        ROUTE: "/Authorization/validate"
     }
 };
 

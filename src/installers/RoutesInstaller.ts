@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IInstaller } from "../contracts/IInstaller";
-import { ErrorHandler } from "../exception/ExceptionHandler";
+import { ErrorHandler } from "../error/ErrorHandler";
 import { Routes } from "../routes";
 
 export class RoutesInstaller implements IInstaller {

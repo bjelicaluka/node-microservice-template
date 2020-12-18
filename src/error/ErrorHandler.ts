@@ -8,6 +8,7 @@ interface ErrorResponse {
 
 const ErrorNameCode = {
   QueryFailedError: 400,
+  UnauthorizedError: 401,
 }
 
 // Singleton

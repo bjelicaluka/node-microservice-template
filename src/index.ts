@@ -26,15 +26,11 @@ createConnection(ORM_CONFIG).then(async () => {
 
   // Start the app
   const httpServer = require("http").Server(app);
-  const io = require("socket.io")(httpServer, {
-    cors: {
-      origin: "*"
-    }
-  });
-  const i = SocketIOServer.getInstance(io);
+  // Initialize Socket IO Server
+  const io = SocketIOServer.getInstance(httpServer);
   // TEST PURPOSES ONLY
-  i.createNewNamespace("test");
-  setInterval(() => i.emitAlarm("test", "Hello."), 2000);
+  io.createNewNamespace("test");
+  setInterval(() => io.emitAlarm("test", "Hello."), 2000);
   //
   httpServer.listen(PORT);
   console.log(`Server is listening on port ${PORT}.`);
