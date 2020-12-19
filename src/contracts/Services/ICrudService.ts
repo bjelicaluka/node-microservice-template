@@ -3,9 +3,9 @@ export interface ICrudService<BaseEntity> {
 
     getById(id: number): Promise<BaseEntity>;
 
-    add(alarmRecord: BaseEntity): Promise<BaseEntity>;
+    add(entity: BaseEntity): Promise<BaseEntity>;
 
-    update(alarmRecord: BaseEntity): Promise<BaseEntity>;
+    update(entity: BaseEntity): Promise<BaseEntity>;
 
     delete(id: number): Promise<BaseEntity>;
 };
