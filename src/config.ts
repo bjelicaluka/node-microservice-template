@@ -19,14 +19,14 @@ export const RemoteServicesInfo: ServicesInfo = {
 };
 
 export const ORM_CONFIG: ConnectionOptions = {
-    // type: "sqlite",
-    // database: "../database.sql",
-    type: "mysql",
-    host: "mariadb-alarm",
-    port: 3306,
-    username: "root",
-    password: "1234",
-    database: "alarms_db",
+    type: "sqlite",
+    database: "../database.sql",
+    // type: "mysql",
+    // host: "mariadb-alarm",
+    // port: 3306,
+    // username: "root",
+    // password: "1234",
+    // database: "alarms_db",
     synchronize: true,
     logging: false,
     entities: [

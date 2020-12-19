@@ -1,30 +1,47 @@
 import { Repository } from "typeorm";
 import { ICrudService } from "../contracts/Services/ICrudService";
 import { BaseEntity } from "../entity/BaseEntity";
+import { EntityAlreadyExistsError } from "../error/errors/EntityAlreadyExistsError";
+import { EntityNotFoundError } from "../error/errors/EntityNotFoundError";
 
 export class CrudService implements ICrudService<BaseEntity> {
     
     protected repository: Repository<BaseEntity>;
 
+    constructor(repository: Repository<BaseEntity>) {
+        this.repository = repository;
+    }
+
     async get(): Promise<BaseEntity[]> {
         return this.repository.find({ loadEagerRelations: true });
     }
 
-    async getById(id: string): Promise<BaseEntity> {
-        return this.repository.findOne(id);
+    async getById(id: number): Promise<BaseEntity> {
+        const entityWithProvidedId = await this.repository.findOne(id);
+        if(entityWithProvidedId)
+            return entityWithProvidedId;
+        throw new EntityNotFoundError("Entity with provided id does not exist.");
     }
 
     async add(entity: BaseEntity): Promise<BaseEntity> {
-        return this.repository.save(entity);
+        const entityWithProvidedId = await this.repository.findOne(entity.id);
+        if(!entity.id || !entityWithProvidedId)
+            return this.repository.save(entity);
+        throw new EntityAlreadyExistsError("Entity with provided id already exists.");
     }
 
     async update(entity: BaseEntity): Promise<BaseEntity> {
-        return this.repository.save(entity);
+        const entityWithProvidedId = await this.repository.findOne(entity.id);
+        if(entityWithProvidedId)
+            return this.repository.save(entity);
+        throw new EntityNotFoundError("Entity with provided id does not exist.");
     }
 
-    async delete(id: string): Promise<BaseEntity> {
-        let entityToRemove = await this.repository.findOne(id);
-        return this.repository.remove(entityToRemove);
+    async delete(id: number): Promise<BaseEntity> {
+        const entityWithProvidedId = await this.repository.findOne(id);
+        if(entityWithProvidedId)
+            return this.repository.remove(entityWithProvidedId);
+        throw new EntityNotFoundError("Entity with provided id does not exist.");
     }
 
 }

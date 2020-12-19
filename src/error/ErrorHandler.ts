@@ -8,6 +8,8 @@ interface ErrorResponse {
 
 const ErrorNameCode = {
   QueryFailedError: 400,
+  EntityNotFoundError: 404,
+  EntityAlreadyExistsError: 400,
   UnauthorizedError: 401,
 }
 

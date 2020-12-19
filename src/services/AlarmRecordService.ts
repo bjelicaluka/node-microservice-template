@@ -7,8 +7,7 @@ import { BaseEntity } from "../entity/BaseEntity";
 export class AlarmRecordService extends CrudService {
     
     constructor() {
-        super();
-        this.repository = getRepository(AlarmRecord);
+        super(getRepository(AlarmRecord));
     }
 
     public static getInstance(): ICrudService<BaseEntity> {

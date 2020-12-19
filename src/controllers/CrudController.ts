@@ -16,7 +16,7 @@ export class CrudController implements ICrudController {
     }
 
     async getById(request: Request, response: Response, next: NextFunction) {
-        return this.service.getById(request.params.id);
+        return this.service.getById(parseInt(request.params.id));
     }
 
     async add(request: Request, response: Response, next: NextFunction) {
@@ -28,7 +28,7 @@ export class CrudController implements ICrudController {
     }
 
     async delete(request: Request, response: Response, next: NextFunction) {
-        return this.service.delete(request.params.id);
+        return this.service.delete(parseInt(request.params.id));
     }
 
 }

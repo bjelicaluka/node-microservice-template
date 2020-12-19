@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import * as express from "express";
+import { Server } from 'http';
 import { MiddlewareInstaller } from "./installers/MiddlewareInstaller";
 import { AuthMiddlewareInstaller } from "./installers/AuthMiddlewareInstaller";
 import { RoutesInstaller } from "./installers/RoutesInstaller";
@@ -25,7 +26,7 @@ createConnection(ORM_CONFIG).then(async () => {
   installers.forEach(i => i.install());
 
   // Start the app
-  const httpServer = require("http").Server(app);
+  const httpServer = new Server(app);
   // Initialize Socket IO Server
   const io = SocketIOServer.getInstance(httpServer);
   // TEST PURPOSES ONLY
