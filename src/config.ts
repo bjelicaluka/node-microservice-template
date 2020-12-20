@@ -7,14 +7,22 @@ import { AlarmSensor } from "./entity/AlarmSensor";
 interface ServicesInfo {
     AuthService: {
         API_URL: string;
-        ROUTE: string;
+        TOKEN_VALIDATION_ROUTE: string;
     };
-}
+    UserService: {
+        API_URL: string;
+        TOKEN_USER_GROUP_VALIDATION_ROUTE: string;    
+    }
+};
 
 export const RemoteServicesInfo: ServicesInfo = {
     AuthService: {
         API_URL: process.env.AUTH_SERVICE_URL || null,
-        ROUTE: "/Authorization/validate"
+        TOKEN_VALIDATION_ROUTE: "/Authorization/validate"
+    },
+    UserService: {
+        API_URL: process.env.USER_SERVICE_URL || null,
+        TOKEN_USER_GROUP_VALIDATION_ROUTE: "/groups/"
     }
 };
 

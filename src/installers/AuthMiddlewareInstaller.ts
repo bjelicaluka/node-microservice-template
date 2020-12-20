@@ -1,5 +1,5 @@
 import { IInstaller } from "../contracts/IInstaller";
-import { AuthServiceMiddleware } from "../middleware/AuthServiceMiddleware";
+import { AuthorizationMiddleware } from "../middleware/SecurityMiddleware";
 import { Routes } from "../routes";
 
 export class AuthMiddlewareInstaller implements IInstaller {
@@ -12,7 +12,7 @@ export class AuthMiddlewareInstaller implements IInstaller {
     install(): void {
         Routes.forEach(route => {
             if(route.roles && route.roles.length) {
-                this.app[route.method](route.route, AuthServiceMiddleware(route.roles));
+                this.app[route.method](route.route, AuthorizationMiddleware(route.roles));
             }
         });
     }

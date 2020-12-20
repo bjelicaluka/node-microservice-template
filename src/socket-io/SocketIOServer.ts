@@ -1,6 +1,6 @@
 import { Server as HttpServer } from 'http';
 import { Namespace, Server } from "socket.io";
-import { SocketAuthServiceMiddleware } from "../middleware/AuthServiceMiddleware";
+import { SocketAuthorizationMiddleware, SocketUserGroupSpecificMiddleware } from "../middleware/SecurityMiddleware";
 
 const BASE_NAMESPACE = 'live-alarms';
 const LOGGING = false;
@@ -33,26 +33,27 @@ export class SocketIOServer {
     return SocketIOServer.instance;
   }
 
-  emitAlarm(sensorId: string, data: any) {
-    this.getNamespace(sensorId).emit('alarm', data);
+  emitAlarm(userGroupId: string, data: any) {
+    this.getNamespace(userGroupId).emit('alarm', data);
   }
 
-  getNamespace(sensorId: string) {
-    if (!this.namespaces[sensorId]) {
-      this.createNewNamespace(sensorId);
+  getNamespace(userGroupId: string) {
+    if (!this.namespaces[userGroupId]) {
+      this.createNewNamespace(userGroupId);
     }
-    return this.namespaces[sensorId];
+    return this.namespaces[userGroupId];
   }
 
-  createNewNamespace(sensorId: string) {
-    this.namespaces[sensorId] = this.io.of(`/${BASE_NAMESPACE}/${sensorId}`);
+  createNewNamespace(userGroupId: string) {
+    this.namespaces[userGroupId] = this.io.of(`/${BASE_NAMESPACE}/${userGroupId}`);
     
-    this.namespaces[sensorId].use(SocketAuthServiceMiddleware(['CloudAdmin']));
+    this.namespaces[userGroupId].use(SocketAuthorizationMiddleware(['CloudAdmin', 'Admin']));
+    this.namespaces[userGroupId].use(SocketUserGroupSpecificMiddleware(userGroupId));
     
-    this.namespaces[sensorId].on('connection', (socket) => {
-      LOGGING && console.log(`Client connected to Alarm namespace, sensorId: ${sensorId}.`);
+    this.namespaces[userGroupId].on('connection', (socket) => {
+      LOGGING && console.log(`Client connected to Alarm namespace, userGroupId: ${userGroupId}.`);
       socket.on('disconnect', () => {
-        LOGGING && console.log(`Client disconnected from Alarm namespace, sensorId: ${sensorId}.`);
+        LOGGING && console.log(`Client disconnected from Alarm namespace, userGroupId: ${userGroupId}.`);
       });
     });
   }
