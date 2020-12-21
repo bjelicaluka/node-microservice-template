@@ -3,19 +3,20 @@ import { AlarmRecordRoutes } from "./routes/AlarmRecordRoutes";
 import { AlarmSensorRoutes } from "./routes/AlarmSensorRoutes";
 import { AlarmRoutes } from "./routes/AlarmRoutes";
 
-export interface Route {
+export interface Routes {
+    controller: IController;
+    routes: Route[];
+}
+
+interface Route {
     method: string;
     route: string;
-    controller: IController;
     action: string;
     roles?: string[];
 };
 
-export const Routes: Route[] = [];
-
-// Attach All Routes
-[
+export const Routes: Routes[] = [
     AlarmRoutes,
     AlarmSensorRoutes,
     AlarmRecordRoutes
-].forEach((routes: Route[]) => Routes.push(...routes))
+];

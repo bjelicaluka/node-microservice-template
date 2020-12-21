@@ -12,24 +12,26 @@ export class RoutesInstaller implements IInstaller {
   }
 
   install(): void {
-    Routes.forEach(route => {
-      (this.app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-        const result = (AppContainer.resolve(route.controller as any))[route.action](req, res, next);
-        if (result instanceof Promise) {
-          result
-            .then(result => result !== null && result !== undefined ? res.send(result) : undefined)
-            .catch((error: Error) => {
-              const errorHandler = ErrorHandler.getInstance();
-              const errorResponse = errorHandler.handleError(error);
-              errorHandler.sendErrorResponse(errorResponse, res);
-            });
-        } else if (result !== null && result !== undefined) {
-          res.json(result);
-        } else {
-          res.status(500);
-          res.send();
-        }
-      });
+    Routes.forEach(routes => {
+      routes.routes.forEach(route => {
+        (this.app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+          const result = (AppContainer.resolve(routes.controller as any))[route.action](req, res, next);
+          if (result instanceof Promise) {
+            result
+              .then(result => result !== null && result !== undefined ? res.send(result) : undefined)
+              .catch((error: Error) => {
+                const errorHandler = ErrorHandler.getInstance();
+                const errorResponse = errorHandler.handleError(error);
+                errorHandler.sendErrorResponse(errorResponse, res);
+              });
+          } else if (result !== null && result !== undefined) {
+            res.json(result);
+          } else {
+            res.status(500);
+            res.send();
+          }
+        });
+      })
     });
   }
 

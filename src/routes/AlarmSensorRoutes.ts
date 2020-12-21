@@ -1,36 +1,34 @@
 import { AlarmSensorController } from "../controllers/AlarmSensorController";
-import { Route } from "../routes";
+import { Routes } from "../routes";
 
-export const AlarmSensorRoutes: Route[] = [
+export const AlarmSensorRoutes: Routes = {
+  controller: AlarmSensorController,
+  routes: [
     {
-        method: "get",
-        route: "/alarm-sensors",
-        controller: AlarmSensorController,
-        action: "get",
-        roles: ["Admin"]
+      method: "get",
+      route: "/alarm-sensors",
+      action: "get",
+      roles: ["Admin"]
     },
     {
-        method: "get",
-        route: "/alarm-sensors/:id",
-        controller: AlarmSensorController,
-        action: "getById"
+      method: "get",
+      route: "/alarm-sensors/:id",
+      action: "getById"
     },
     {
-        method: "post",
-        route: "/alarm-sensors",
-        controller: AlarmSensorController,
-        action: "add"
+      method: "post",
+      route: "/alarm-sensors",
+      action: "add"
     },
     {
-        method: "put",
-        route: "/alarm-sensors",
-        controller: AlarmSensorController,
-        action: "update"
+      method: "put",
+      route: "/alarm-sensors",
+      action: "update"
     },
     {
-        method: "delete",
-        route: "/alarm-sensors/:id",
-        controller: AlarmSensorController,
-        action: "delete"
+      method: "delete",
+      route: "/alarm-sensors/:id",
+      action: "delete"
     }
-];
+  ]
+}

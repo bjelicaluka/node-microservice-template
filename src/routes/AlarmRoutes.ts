@@ -1,36 +1,34 @@
 import { AlarmController } from "../controllers/AlarmController";
-import { Route } from "../routes";
+import { Routes } from "../routes";
 
-export const AlarmRoutes: Route[] = [
+export const AlarmRoutes: Routes = {
+  controller: AlarmController,
+  routes: [
     {
-        method: "get",
-        route: "/alarms",
-        controller: AlarmController,
-        action: "get",
-        roles: ["Admin"]
+      method: "get",
+      route: "/alarms",
+      action: "get",
+      roles: ["Admin"]
     },
     {
-        method: "get",
-        route: "/alarms/:id",
-        controller: AlarmController,
-        action: "getById"
+      method: "get",
+      route: "/alarms/:id",
+      action: "getById"
     },
     {
-        method: "post",
-        route: "/alarms",
-        controller: AlarmController,
-        action: "add"
+      method: "post",
+      route: "/alarms",
+      action: "add"
     },
     {
-        method: "put",
-        route: "/alarms",
-        controller: AlarmController,
-        action: "update"
+      method: "put",
+      route: "/alarms",
+      action: "update"
     },
     {
-        method: "delete",
-        route: "/alarms/:id",
-        controller: AlarmController,
-        action: "delete"
+      method: "delete",
+      route: "/alarms/:id",
+      action: "delete"
     }
-];
+  ]
+}
