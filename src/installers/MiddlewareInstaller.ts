@@ -1,10 +1,13 @@
 import * as bodyParser from "body-parser";
+import { Application } from "express";
+import { inject, injectable } from "inversify";
 import { IInstaller } from "../contracts/IInstaller";
 
+@injectable()
 export class MiddlewareInstaller implements IInstaller {
-    private app: any;
+    private app: Application;
 
-    constructor(app: any) {
+    constructor(@inject("Application") app: Application) {
         this.app = app;
     }
 

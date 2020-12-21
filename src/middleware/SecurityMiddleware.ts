@@ -7,6 +7,7 @@ import { AuthServiceProxy } from "../services/proxy/AuthServiceProxy";
 import { IUserService } from "../contracts/Services/IUserService";
 import { UserServiceProxy } from "../services/proxy/UserServiceProxy";
 import { CONFIGURATION } from "../config";
+import { AppContainer } from "../container/container";
 
 interface TokenQuery {
   token: string;
@@ -40,7 +41,7 @@ export function SocketUserGroupSpecificMiddleware(userGroupId: string, roles: st
 };
 
 function validateToken(token: string, roles: string[], onSuccess: Function, onError: Function): void {
-  const authService: IAuthService = AuthServiceProxy.getInstance();
+  const authService: IAuthService = AppContainer.get<IAuthService>("IAuthService");
 
   authService.validateToken(token, roles)
     .then(() => {
@@ -53,7 +54,7 @@ function validateToken(token: string, roles: string[], onSuccess: Function, onEr
 }
 
 function validateTokenUserGroup(token: string, userGroupId: string, roles: string[], onSuccess: Function, onError: Function): void {
-  const userService: IUserService = UserServiceProxy.getInstance();
+  const userService: IUserService = AppContainer.get<IUserService>("IUserService");
 
   userService.validateTokenUserGroup(token, userGroupId, roles)
     .then(() => {

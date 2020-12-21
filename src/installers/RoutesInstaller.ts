@@ -1,13 +1,15 @@
-import { Request, Response } from "express";
+import { Application, Request, Response } from "express";
+import { inject, injectable } from "inversify";
 import { AppContainer } from "../container/container";
 import { IInstaller } from "../contracts/IInstaller";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Routes } from "../routes";
 
+@injectable()
 export class RoutesInstaller implements IInstaller {
-  private app: any;
+  private app: Application;
 
-  constructor(app: any) {
+  constructor(@inject("Application") app: Application) {
     this.app = app;
   }
 

@@ -1,5 +1,7 @@
 import { Server as HttpServer } from 'http';
+import { inject, injectable } from 'inversify';
 import { Namespace, Server } from "socket.io";
+import { IAlarmEventDispatcher } from '../contracts/IAlarmEventDispatcher';
 import { SocketUserGroupSpecificMiddleware } from "../middleware/SecurityMiddleware";
 
 const BASE_NAMESPACE = 'live-alarms';
@@ -9,42 +11,28 @@ interface NamespacesRegistry {
   [key: string]: Namespace
 }
 
-// Singleton
-export class SocketIOServer {
-  private static instance: SocketIOServer;
+@injectable()
+export class SocketIOServer implements IAlarmEventDispatcher {
   private namespaces: NamespacesRegistry;
   private io: Server;
 
-  private constructor(httpServer: HttpServer) {
-    this.io = new Server(httpServer, {
-      cors: {
-        origin: "*"
-      }
-    });
+  constructor(@inject(HttpServer) httpServer: HttpServer) {
+    this.io = new Server(httpServer, { cors: { origin: "*" } });
     this.namespaces = {};
   }
 
-  static getInstance(httpServer?: HttpServer) {
-    if (!SocketIOServer.instance && !httpServer) {
-      throw "Not instantiated";
-    } else if (!SocketIOServer.instance && httpServer) {
-      SocketIOServer.instance = new SocketIOServer(httpServer);
-    }
-    return SocketIOServer.instance;
-  }
-
-  emitAlarm(userGroupId: string, data: any) {
+  public dispatchAlarm(userGroupId: string, data: any) {
     this.getNamespace(userGroupId).emit('alarm', data);
   }
 
-  getNamespace(userGroupId: string) {
+  private getNamespace(userGroupId: string) {
     if (!this.namespaces[userGroupId]) {
       this.createNewNamespace(userGroupId);
     }
     return this.namespaces[userGroupId];
   }
 
-  createNewNamespace(userGroupId: string) {
+  private createNewNamespace(userGroupId: string) {
     this.namespaces[userGroupId] = this.io.of(`/${BASE_NAMESPACE}/${userGroupId}`);
     
     this.namespaces[userGroupId].use(SocketUserGroupSpecificMiddleware(userGroupId, ['CloudAdmin', 'Admin']));
