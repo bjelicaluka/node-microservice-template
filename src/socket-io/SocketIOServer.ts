@@ -1,6 +1,6 @@
 import { Server as HttpServer } from 'http';
 import { Namespace, Server } from "socket.io";
-import { SocketAuthorizationMiddleware, SocketUserGroupSpecificMiddleware } from "../middleware/SecurityMiddleware";
+import { SocketUserGroupSpecificMiddleware } from "../middleware/SecurityMiddleware";
 
 const BASE_NAMESPACE = 'live-alarms';
 const LOGGING = false;
@@ -47,8 +47,7 @@ export class SocketIOServer {
   createNewNamespace(userGroupId: string) {
     this.namespaces[userGroupId] = this.io.of(`/${BASE_NAMESPACE}/${userGroupId}`);
     
-    this.namespaces[userGroupId].use(SocketAuthorizationMiddleware(['CloudAdmin', 'Admin']));
-    this.namespaces[userGroupId].use(SocketUserGroupSpecificMiddleware(userGroupId));
+    this.namespaces[userGroupId].use(SocketUserGroupSpecificMiddleware(userGroupId, ['CloudAdmin', 'Admin']));
     
     this.namespaces[userGroupId].on('connection', (socket) => {
       LOGGING && console.log(`Client connected to Alarm namespace, userGroupId: ${userGroupId}.`);

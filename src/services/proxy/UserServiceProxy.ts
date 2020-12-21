@@ -7,8 +7,13 @@ const { API_URL, TOKEN_USER_GROUP_VALIDATION_ROUTE } = RemoteServicesInfo.UserSe
 
 export class UserServiceProxy implements IUserService {
 
-  validateTokenUserGroup(token: string, userGroupId: string): Promise<any> {
-    return Axios.get(`${API_URL}${TOKEN_USER_GROUP_VALIDATION_ROUTE}${userGroupId}`, {
+  validateTokenUserGroup(token: string, userGroupId: string, roles: string[]): Promise<any> {
+    return Axios.post(`${API_URL}${TOKEN_USER_GROUP_VALIDATION_ROUTE}`, 
+    {
+      roles: roles,
+      groupId: userGroupId,
+    },
+    {
       headers: {
         'Authorization': token
       }

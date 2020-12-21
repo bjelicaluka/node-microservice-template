@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AppContainer } from "../container/container";
 import { IInstaller } from "../contracts/IInstaller";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Routes } from "../routes";
@@ -13,7 +14,7 @@ export class RoutesInstaller implements IInstaller {
   install(): void {
     Routes.forEach(route => {
       (this.app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-        const result = (new (route.controller as any))[route.action](req, res, next);
+        const result = (AppContainer.resolve(route.controller as any))[route.action](req, res, next);
         if (result instanceof Promise) {
           result
             .then(result => result !== null && result !== undefined ? res.send(result) : undefined)

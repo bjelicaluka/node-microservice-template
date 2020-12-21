@@ -1,5 +1,5 @@
 export interface IUserService {
 
-  validateTokenUserGroup(token: string, userGroupId: string): Promise<any>;
+  validateTokenUserGroup(token: string, userGroupId: string, roles: string[]): Promise<any>;
 
 }

@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { ICrudController } from "../contracts/ICrudController";
 import { BaseEntity } from "../entity/BaseEntity";
 import { ICrudService } from "../contracts/Services/ICrudService";
+import { injectable } from "inversify";
 
+@injectable()
 export class CrudController implements ICrudController {
 
     private service: ICrudService<BaseEntity>;

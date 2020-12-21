@@ -1,10 +1,11 @@
-import { AlarmService } from "../services/AlarmService";
+import { inject } from "inversify";
+import { IAlarmService } from "../contracts/Services/IAlarmService";
 import { CrudController } from "./CrudController";
 
 export class AlarmController extends CrudController {
 
-    constructor() {
-        super(AlarmService.getInstance());
+    constructor(@inject("IAlarmService") service: IAlarmService) {
+        super(service);
     }
 
 }

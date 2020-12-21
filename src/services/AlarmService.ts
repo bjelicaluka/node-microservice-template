@@ -1,17 +1,13 @@
 import { getRepository } from "typeorm";
-import { ICrudService } from "../contracts/Services/ICrudService";
 import { CrudService } from "./CrudService";
-import { BaseEntity } from "../entity/BaseEntity";
 import { Alarm } from "../entity/Alarm";
+import { IAlarmService } from "../contracts/Services/IAlarmService";
 
-export class AlarmService extends CrudService {
+export class AlarmService extends CrudService implements IAlarmService {
     
     constructor() {
-        super(getRepository(Alarm));
-    }
-
-    public static getInstance(): ICrudService<BaseEntity> {
-        return new AlarmService();
+        super();
+        this.repository = getRepository(Alarm);
     }
 
 }

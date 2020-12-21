@@ -1,16 +1,14 @@
+import { injectable } from "inversify";
 import { Repository } from "typeorm";
 import { ICrudService } from "../contracts/Services/ICrudService";
 import { BaseEntity } from "../entity/BaseEntity";
 import { EntityAlreadyExistsError } from "../error/errors/EntityAlreadyExistsError";
 import { EntityNotFoundError } from "../error/errors/EntityNotFoundError";
 
+@injectable()
 export class CrudService implements ICrudService<BaseEntity> {
     
     protected repository: Repository<BaseEntity>;
-
-    constructor(repository: Repository<BaseEntity>) {
-        this.repository = repository;
-    }
 
     async get(): Promise<BaseEntity[]> {
         return this.repository.find({ loadEagerRelations: true });
