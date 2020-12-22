@@ -14,7 +14,7 @@ export class AlarmSensor extends BaseEntity {
     eager: true,
   })
   @JoinTable()
-  alarms: Alarm;
+  alarms: Alarm[];
 
   @OneToMany(() => AlarmRecord, alarmRecord => alarmRecord.alarmSensor, {
     nullable: false,

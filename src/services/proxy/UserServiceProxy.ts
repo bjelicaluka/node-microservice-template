@@ -1,7 +1,6 @@
-import { IAuthService } from "../../contracts/Services/IAuthService";
 import Axios from "axios";
 import { RemoteServicesInfo } from "../../config";
-import { IUserService } from "../../contracts/Services/IUserService";
+import { IUserService } from "../../contracts/Services/proxy/IUserService";
 import { injectable } from "inversify";
 
 const { API_URL, TOKEN_USER_GROUP_VALIDATION_ROUTE } = RemoteServicesInfo.UserService;

@@ -39,7 +39,7 @@ function installMiddleware() {
 // Test purposes
 function initializeServer(): void {
   const io = AppContainer.get<IAlarmEventDispatcher>("IAlarmEventDispatcher");
-  setInterval(() => io.dispatchAlarm("141047f6-010c-4e4a-a84d-dbc31281740b", "Hello."), 2000);
+  setInterval(() => io.dispatchAlarm("22d43aba-353b-4101-8806-ed2efdd59399", "Hello."), 2000);
 }
 
 function startServer(): void {

@@ -1,4 +1,4 @@
-import { IAuthService } from "../../contracts/Services/IAuthService";
+import { IAuthService } from "../../contracts/Services/proxy/IAuthService";
 import Axios from "axios";
 import { RemoteServicesInfo } from "../../config";
 import { injectable } from "inversify";

@@ -12,7 +12,11 @@ interface ServicesInfo {
     UserService: {
         API_URL: string;
         TOKEN_USER_GROUP_VALIDATION_ROUTE: string;
-    }
+    },
+    SensorService: {
+        API_URL: string;
+        AUTHENTICATE_ROUTE: string;
+    },
 };
 
 const isProductionConfiguration: boolean = process.env.CONFIGURATION === 'production';
@@ -24,11 +28,15 @@ export const CONFIGURATION = {
 export const RemoteServicesInfo: ServicesInfo = {
     AuthService: {
         API_URL: process.env.AUTH_SERVICE_URL || "http://bjelicaluka.live:3333/authService",
-        TOKEN_VALIDATION_ROUTE: "/Authorization/validate"
+        TOKEN_VALIDATION_ROUTE: "/Authorization/validate",
     },
     UserService: {
         API_URL: process.env.USER_SERVICE_URL || "http://bjelicaluka.live:3333/userService",
-        TOKEN_USER_GROUP_VALIDATION_ROUTE: "/Authorization/role-in-group"
+        TOKEN_USER_GROUP_VALIDATION_ROUTE: "/Authorization/role-in-group",
+    },
+    SensorService: {
+        API_URL: process.env.SENSOR_SERVICE_URL || "http://bjelicaluka.live:3333/sensorService",
+        AUTHENTICATE_ROUTE: "/Authentication/authenticate",
     }
 };
 

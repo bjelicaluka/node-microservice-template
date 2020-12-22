@@ -3,7 +3,7 @@ import { CrudService } from "./CrudService";
 import { Alarm } from "../entity/Alarm";
 import { IAlarmService } from "../contracts/Services/IAlarmService";
 
-export class AlarmService extends CrudService implements IAlarmService {
+export class AlarmService extends CrudService<Alarm> implements IAlarmService {
     
     constructor() {
         super();

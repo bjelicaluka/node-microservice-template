@@ -2,10 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { UnauthorizedError } from "../error/errors/UnauthorizedError";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Socket } from "socket.io";
-import { IAuthService } from "../contracts/Services/IAuthService";
-import { AuthServiceProxy } from "../services/proxy/AuthServiceProxy";
-import { IUserService } from "../contracts/Services/IUserService";
-import { UserServiceProxy } from "../services/proxy/UserServiceProxy";
+import { IAuthService } from "../contracts/Services/proxy/IAuthService";
+import { IUserService } from "../contracts/Services/proxy/IUserService";
 import { CONFIGURATION } from "../config";
 import { AppContainer } from "../container/container";
 

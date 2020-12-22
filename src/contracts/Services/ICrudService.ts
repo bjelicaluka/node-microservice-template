@@ -1,11 +1,11 @@
-export interface ICrudService<BaseEntity> {
-    get(): Promise<BaseEntity[]>;
+export interface ICrudService<T> {
+    get(): Promise<T[]>;
 
-    getById(id: number): Promise<BaseEntity>;
+    getById(id: number): Promise<T>;
 
-    add(entity: BaseEntity): Promise<BaseEntity>;
+    add(entity: T): Promise<T>;
 
-    update(entity: BaseEntity): Promise<BaseEntity>;
+    update(entity: T): Promise<T>;
 
-    delete(id: number): Promise<BaseEntity>;
+    delete(id: number): Promise<T>;
 };

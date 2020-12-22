@@ -2,6 +2,7 @@ import { IController } from "./contracts/IController";
 import { AlarmRecordRoutes } from "./routes/AlarmRecordRoutes";
 import { AlarmSensorRoutes } from "./routes/AlarmSensorRoutes";
 import { AlarmRoutes } from "./routes/AlarmRoutes";
+import { AlarmCheckerRoutes } from "./routes/AlarmCheckerRoutes";
 
 export interface Routes {
     controller: IController;
@@ -18,5 +19,6 @@ interface Route {
 export const Routes: Routes[] = [
     AlarmRoutes,
     AlarmSensorRoutes,
-    AlarmRecordRoutes
+    AlarmRecordRoutes,
+    AlarmCheckerRoutes,
 ];

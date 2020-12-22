@@ -1,41 +1,41 @@
 import { injectable } from "inversify";
-import { Repository } from "typeorm";
+import { DeepPartial, getRepository, Repository } from "typeorm";
 import { ICrudService } from "../contracts/Services/ICrudService";
 import { BaseEntity } from "../entity/BaseEntity";
 import { EntityAlreadyExistsError } from "../error/errors/EntityAlreadyExistsError";
 import { EntityNotFoundError } from "../error/errors/EntityNotFoundError";
 
 @injectable()
-export class CrudService implements ICrudService<BaseEntity> {
+export class CrudService<T extends BaseEntity> implements ICrudService<T> {
     
-    protected repository: Repository<BaseEntity>;
+    protected repository: Repository<T>;
 
-    async get(): Promise<BaseEntity[]> {
+    async get(): Promise<T[]> {
         return this.repository.find({ loadEagerRelations: true });
     }
 
-    async getById(id: number): Promise<BaseEntity> {
+    async getById(id: number): Promise<T> {
         const entityWithProvidedId = await this.repository.findOne(id);
         if(entityWithProvidedId)
-            return entityWithProvidedId;
+            return entityWithProvidedId as T;
         throw new EntityNotFoundError("Entity with provided id does not exist.");
     }
 
-    async add(entity: BaseEntity): Promise<BaseEntity> {
+    async add(entity: T): Promise<T> {
         const entityWithProvidedId = await this.repository.findOne(entity.id);
         if(!entity.id || !entityWithProvidedId)
-            return this.repository.save(entity);
+            return this.repository.save(entity as BaseEntity as DeepPartial<T>);
         throw new EntityAlreadyExistsError("Entity with provided id already exists.");
     }
 
-    async update(entity: BaseEntity): Promise<BaseEntity> {
+    async update(entity: T): Promise<T> {
         const entityWithProvidedId = await this.repository.findOne(entity.id);
         if(entityWithProvidedId)
-            return this.repository.save(entity);
+            return this.repository.save(entity as BaseEntity as DeepPartial<T>);
         throw new EntityNotFoundError("Entity with provided id does not exist.");
     }
 
-    async delete(id: number): Promise<BaseEntity> {
+    async delete(id: number): Promise<T> {
         const entityWithProvidedId = await this.repository.findOne(id);
         if(entityWithProvidedId)
             return this.repository.remove(entityWithProvidedId);
