@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ICrudController } from "../contracts/ICrudController";
 import { BaseEntity } from "../entity/BaseEntity";
-import { ICrudService } from "../contracts/Services/ICrudService";
+import { ICrudService } from "../contracts/services/ICrudService";
 import { injectable } from "inversify";
 
 @injectable()

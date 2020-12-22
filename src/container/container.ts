@@ -4,11 +4,11 @@ import { Server } from 'http';
 import { Container } from 'inversify';
 import { IAlarmEventDispatcher } from '../contracts/IAlarmEventDispatcher';
 import { IInstaller } from "../contracts/IInstaller";
-import { IAlarmRecordService } from '../contracts/Services/IAlarmRecordService';
-import { IAlarmSensorService } from '../contracts/Services/IAlarmSensorService';
-import { IAlarmService } from '../contracts/Services/IAlarmService';
-import { IAuthService } from "../contracts/Services/proxy/IAuthService";
-import { IUserService } from "../contracts/Services/proxy/IUserService";
+import { IAlarmRecordService } from '../contracts/services/IAlarmRecordService';
+import { IAlarmSensorService } from '../contracts/services/IAlarmSensorService';
+import { IAlarmService } from '../contracts/services/IAlarmService';
+import { IAuthService } from "../contracts/services/proxy/IAuthService";
+import { IUserService } from "../contracts/services/proxy/IUserService";
 import { AlarmController } from '../controllers/AlarmController';
 import { AlarmRecordController } from '../controllers/AlarmRecordController';
 import { AlarmSensorController } from '../controllers/AlarmSensorController';
@@ -21,11 +21,13 @@ import { AlarmService } from '../services/AlarmService';
 import { AuthServiceProxy } from "../services/proxy/AuthServiceProxy";
 import { UserServiceProxy } from "../services/proxy/UserServiceProxy";
 import { SocketIOServer } from '../event-dispatchers/SocketIOServer';
-import { IAlarmCheckerService } from "../contracts/Services/IAlarmCheckerService";
+import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
 import { AlarmCheckerService } from "../services/AlarmCheckerService";
 import { SensorServiceProxy } from "../services/proxy/SensorServiceProxy";
-import { ISensorService } from "../contracts/Services/proxy/ISensorService";
+import { ISensorService } from "../contracts/services/proxy/ISensorService";
 import { AlarmCheckerController } from "../controllers/AlarmCheckerController";
+import { RemoteCacheService } from "../services/cache/RemoteCacheService";
+import { IRemoteCacheService } from "../contracts/services/cache/IRemoteCacheService";
 
 const AppContainer = new Container();
 
@@ -48,6 +50,9 @@ AppContainer.bind<IAlarmCheckerService>("IAlarmCheckerService").to(AlarmCheckerS
 AppContainer.bind<IAuthService>("IAuthService").to(AuthServiceProxy).inRequestScope();
 AppContainer.bind<IUserService>("IUserService").to(UserServiceProxy).inRequestScope();
 AppContainer.bind<ISensorService>("ISensorService").to(SensorServiceProxy).inRequestScope();
+
+// Cache Services
+AppContainer.bind<IRemoteCacheService>("IRemoteCacheService").to(RemoteCacheService).inSingletonScope();
 
 // Controllers
 AppContainer.bind<AlarmController>(AlarmController).toSelf();

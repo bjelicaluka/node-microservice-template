@@ -1,5 +1,5 @@
 import { inject } from "inversify";
-import { IAlarmRecordService } from "../contracts/Services/IAlarmRecordService";
+import { IAlarmRecordService } from "../contracts/services/IAlarmRecordService";
 import { CrudController } from "./CrudController";
 
 export class AlarmRecordController extends CrudController {

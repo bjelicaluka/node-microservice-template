@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify";
 import { IAlarmEventDispatcher } from "../contracts/IAlarmEventDispatcher";
-import { IAlarmCheckerService } from "../contracts/Services/IAlarmCheckerService";
-import { IAlarmRecordService } from "../contracts/Services/IAlarmRecordService";
-import { IAlarmSensorService } from "../contracts/Services/IAlarmSensorService";
-import { IAlarmService } from "../contracts/Services/IAlarmService";
-import { ISensorService, SensorInfo } from "../contracts/Services/proxy/ISensorService";
+import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
+import { IAlarmRecordService } from "../contracts/services/IAlarmRecordService";
+import { IAlarmSensorService } from "../contracts/services/IAlarmSensorService";
+import { IAlarmService } from "../contracts/services/IAlarmService";
+import { ISensorService, SensorInfo } from "../contracts/services/proxy/ISensorService";
 import { AlarmRecord } from "../entity/AlarmRecord";
 import { AlarmSensor } from "../entity/AlarmSensor";
 import { AlarmType } from "../entity/AlarmType";

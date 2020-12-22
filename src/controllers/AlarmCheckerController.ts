@@ -1,8 +1,8 @@
 import { application, NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { IController } from "../contracts/IController";
-import { IAlarmCheckerService } from "../contracts/Services/IAlarmCheckerService";
-import { ISensorService } from "../contracts/Services/proxy/ISensorService";
+import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
+import { ISensorService } from "../contracts/services/proxy/ISensorService";
 
 @injectable()
 export class AlarmCheckerController implements IController {

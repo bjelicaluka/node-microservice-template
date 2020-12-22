@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { DeepPartial, getRepository, Repository } from "typeorm";
-import { ICrudService } from "../contracts/Services/ICrudService";
+import { ICrudService } from "../contracts/services/ICrudService";
 import { BaseEntity } from "../entity/BaseEntity";
 import { EntityAlreadyExistsError } from "../error/errors/EntityAlreadyExistsError";
 import { EntityNotFoundError } from "../error/errors/EntityNotFoundError";
