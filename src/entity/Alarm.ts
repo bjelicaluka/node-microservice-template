@@ -17,4 +17,6 @@ export class Alarm extends BaseEntity {
   @Column()
   threshold: number;
 
+  // TODO: alarm priority
+
 }

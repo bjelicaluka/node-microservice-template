@@ -16,4 +16,6 @@ export class AlarmRecord extends BaseEntity {
   @Column()
   criticalValue: number;
 
+  // TODO: add current threshold
+
 }
