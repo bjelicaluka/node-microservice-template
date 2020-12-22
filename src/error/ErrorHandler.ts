@@ -11,6 +11,7 @@ const ErrorNameCode = {
   EntityNotFoundError: 404,
   EntityAlreadyExistsError: 400,
   UnauthorizedError: 401,
+  Error: 500,
 }
 
 // Singleton

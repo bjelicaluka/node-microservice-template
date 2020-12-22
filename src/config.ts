@@ -4,6 +4,8 @@ import { Alarm } from "./entity/Alarm";
 import { AlarmRecord } from "./entity/AlarmRecord";
 import { AlarmSensor } from "./entity/AlarmSensor";
 
+type RouteFormatterFunction = (params: string[]) => string;
+
 interface ServicesInfo {
   AuthService: {
     API_URL: string;
@@ -16,6 +18,7 @@ interface ServicesInfo {
   SensorService: {
     API_URL: string;
     AUTHENTICATE_ROUTE: string;
+    FETCH_SENSOR_ROUTE: RouteFormatterFunction;
   },
 };
 
@@ -37,6 +40,7 @@ export const RemoteServicesInfo: ServicesInfo = {
   SensorService: {
     API_URL: process.env.SENSOR_SERVICE_URL || "http://bjelicaluka.live:3333/sensorService",
     AUTHENTICATE_ROUTE: "/Authentication/authenticate",
+    FETCH_SENSOR_ROUTE: (params) => `/groups/${params[0]}/sensors/${params[1]}`,
   }
 };
 

@@ -16,7 +16,6 @@ export class RemoteCacheService implements IRemoteCacheService {
   
   keyExists(key: string): Promise<boolean> {
     return new Promise((resolve: Function, reject: Function) => this.client.exists(key, (error: Error, exists: number) => {
-      console.log(exists)
       if(error)
         reject(error);
       else
@@ -32,7 +31,6 @@ export class RemoteCacheService implements IRemoteCacheService {
   
   getValue(key: string): Promise<any> {
     return new Promise((resolve: Function, reject: Function) => this.client.get(key, (error: Error, value: any) => {
-      console.log(value)
       if(error)
         reject(error);
       else {

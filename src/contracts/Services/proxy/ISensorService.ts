@@ -1,13 +1,8 @@
-interface RecordType {
-  [key: string]: string;
-}
+import { Sensor } from "../../../entity/remote/Sensor";
 
 export interface SensorInfo {
-  locationId: string;
   userGroupId: string;
-  name: string,
-  recordType: RecordType 
-  id: string;
+  sensor: Sensor;
 }
 
 export interface ISensorService {

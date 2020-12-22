@@ -18,12 +18,13 @@ export class SensorServiceProxy implements ISensorService {
   }
 
   async authenticateAndFetchSensorInfo(sensorId: string, apiToken: string): Promise<SensorInfo> {
-    if(await this.remoteCacheService.keyExists(sensorId))
-      return await this.remoteCacheService.getValue(sensorId);
+    const cachedSensorInfo: SensorInfo = await this.remoteCacheService.getValue(sensorId);
+    if(cachedSensorInfo)
+      return cachedSensorInfo;
     else {
       const sensorInfo: SensorInfo = (await Axios.post(`${API_URL}${AUTHENTICATE_ROUTE}`, { sensorId, apiToken })).data;
       this.remoteCacheService.cacheValue(sensorId, sensorInfo);
-      return sensorInfo
+      return sensorInfo;
     }
   }
   

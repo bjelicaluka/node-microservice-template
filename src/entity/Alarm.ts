@@ -1,7 +1,8 @@
 import { Entity, Column, ManyToMany } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { AlarmSensor } from "./AlarmSensor";
-import { AlarmType } from "./AlarmType";
+import { AlarmType } from "./enum/AlarmType";
+import { AlarmPriority } from "./enum/AlarmPriority";
 
 @Entity()
 export class Alarm extends BaseEntity {
@@ -17,6 +18,9 @@ export class Alarm extends BaseEntity {
   @Column()
   threshold: number;
 
-  // TODO: alarm priority
+  @Column({
+    default: AlarmPriority.Low
+  })
+  priority: AlarmPriority;
 
 }
