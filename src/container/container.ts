@@ -23,8 +23,6 @@ import { UserServiceProxy } from "../services/proxy/UserServiceProxy";
 import { SocketIOServer } from '../event-dispatchers/SocketIOServer';
 import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
 import { AlarmCheckerService } from "../services/AlarmCheckerService";
-import { SensorServiceProxy } from "../services/proxy/SensorServiceProxy";
-import { ISensorService } from "../contracts/services/proxy/ISensorService";
 import { AlarmCheckerController } from "../controllers/AlarmCheckerController";
 import { RemoteCacheService } from "../services/cache/RemoteCacheService";
 import { IRemoteCacheService } from "../contracts/services/cache/IRemoteCacheService";
@@ -49,7 +47,6 @@ AppContainer.bind<IAlarmCheckerService>("IAlarmCheckerService").to(AlarmCheckerS
 // Proxy Services 
 AppContainer.bind<IAuthService>("IAuthService").to(AuthServiceProxy).inRequestScope();
 AppContainer.bind<IUserService>("IUserService").to(UserServiceProxy).inRequestScope();
-AppContainer.bind<ISensorService>("ISensorService").to(SensorServiceProxy).inRequestScope();
 
 // Cache Services
 AppContainer.bind<IRemoteCacheService>("IRemoteCacheService").to(RemoteCacheService).inSingletonScope();

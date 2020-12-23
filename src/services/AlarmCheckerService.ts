@@ -3,7 +3,7 @@ import { IAlarmEventDispatcher } from "../contracts/IAlarmEventDispatcher";
 import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
 import { IAlarmRecordService } from "../contracts/services/IAlarmRecordService";
 import { IAlarmSensorService } from "../contracts/services/IAlarmSensorService";
-import { ISensorService, SensorInfo } from "../contracts/services/proxy/ISensorService";
+import { SensorInfo } from "../entity/remote/SensorInfo";
 import { Alarm } from "../entity/Alarm";
 import { AlarmRecord } from "../entity/AlarmRecord";
 import { AlarmSensor } from "../entity/AlarmSensor";

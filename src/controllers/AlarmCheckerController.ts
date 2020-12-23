@@ -1,29 +1,24 @@
-import { application, NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { IController } from "../contracts/IController";
 import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
-import { ISensorService } from "../contracts/services/proxy/ISensorService";
+import { SensorInfo } from "../entity/remote/SensorInfo";
 
 @injectable()
 export class AlarmCheckerController implements IController {
 
   private alarmCheckerService: IAlarmCheckerService;
-  private sensorService: ISensorService;
 
   constructor(
     @inject("IAlarmCheckerService") alarmCheckerService: IAlarmCheckerService,
-    @inject("ISensorService") sensorService: ISensorService,
   ) {
     this.alarmCheckerService = alarmCheckerService;
-    this.sensorService = sensorService;
   }
 
   async checkForAlarms(request: Request, response: Response, next: NextFunction) {
-    const { sensorId, apiToken, data } = request.body;
-    const sensorInfo = await this.sensorService.authenticateAndFetchSensorInfo(sensorId, apiToken);
-    await this.alarmCheckerService.checkForAlarms(sensorInfo, data);
-    response.status(200);
-    response.send();
+    const { userGroupId, sensor, data } = request.body;
+    const sensorInfo: SensorInfo = { userGroupId, sensor };
+    return await this.alarmCheckerService.checkForAlarms(sensorInfo, data);
   }
 
 }
