@@ -4,6 +4,8 @@ import { IInstaller } from "./contracts/IInstaller";
 import { ORM_CONFIG, RemoteServicesInfo } from "./config";
 import { AppContainer } from "./AppContainer";
 import { IEventDispatcher } from "./contracts/events/IEventDispatcher";
+import { IEventHandler } from "./contracts/events/IEventHandler";
+import { SocketIOServer } from "./events/SocketIOServer";
 
 const PORT = 4000;
 
@@ -20,8 +22,8 @@ function connectToDatastore(): Promise<any> {
 function startApplication(): void {
   
   installMiddleware();
-  initializeServer(); // Test purposes
   startServer();
+  initializeServer(); // Test purposes
 
   console.log(`Auth Service API url: ${RemoteServicesInfo.AuthService.API_URL}`);
   console.log(`User Service API url: ${RemoteServicesInfo.UserService.API_URL}`);
@@ -39,7 +41,10 @@ function installMiddleware() {
 // Test purposes
 function initializeServer(): void {
   const io = AppContainer.get<IEventDispatcher>("IEventDispatcher");
-  setInterval(() => io.dispatchEvent("22d43aba-353b-4101-8806-ed2efdd59399", 'alarm', "Hello."), 2000);
+  setInterval(() => io.dispatchEvent("test", 'alarm', "Hello."), 2000);
+
+  const handler = AppContainer.get<IEventHandler>("IEventHandler");
+  handler.addEventListener('test', 'ok', (data) => console.log(data));
 }
 
 function startServer(): void {

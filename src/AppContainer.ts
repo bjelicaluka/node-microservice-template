@@ -26,6 +26,7 @@ import { AlarmCheckerService } from "./services/AlarmCheckerService";
 import { AlarmCheckerController } from "./controllers/AlarmCheckerController";
 import { RemoteCacheService } from "./services/cache/RemoteCacheService";
 import { IRemoteCacheService } from "./contracts/services/cache/IRemoteCacheService";
+import { IEventHandler } from "./contracts/events/IEventHandler";
 
 const AppContainer = new Container();
 
@@ -58,6 +59,9 @@ AppContainer.bind<AlarmSensorController>(AlarmSensorController).toSelf();
 AppContainer.bind<AlarmCheckerController>(AlarmCheckerController).toSelf();
 
 // Event Dispatcher
-AppContainer.bind<IEventDispatcher>("IEventDispatcher").to(SocketIOServer).inSingletonScope();
+AppContainer.bind<SocketIOServer>(SocketIOServer).toSelf().inSingletonScope();
+const socketIoServerInstance = AppContainer.get(SocketIOServer);
+AppContainer.bind<IEventDispatcher>("IEventDispatcher").toConstantValue(socketIoServerInstance);
+AppContainer.bind<IEventHandler>("IEventHandler").toConstantValue(socketIoServerInstance);
 
 export { AppContainer };
