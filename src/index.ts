@@ -2,7 +2,7 @@ import { createConnection } from "typeorm";
 import { Server } from 'http';
 import { IInstaller } from "./contracts/IInstaller";
 import { ORM_CONFIG, RemoteServicesInfo } from "./config";
-import { AppContainer } from "./container/container";
+import { AppContainer } from "./AppContainer";
 import { IAlarmEventDispatcher } from "./contracts/IAlarmEventDispatcher";
 
 const PORT = 4000;

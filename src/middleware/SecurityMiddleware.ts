@@ -5,7 +5,7 @@ import { Socket } from "socket.io";
 import { IAuthService } from "../contracts/services/proxy/IAuthService";
 import { IUserService } from "../contracts/services/proxy/IUserService";
 import { CONFIGURATION } from "../config";
-import { AppContainer } from "../container/container";
+import { AppContainer } from "../AppContainer";
 
 interface TokenQuery {
   token: string;

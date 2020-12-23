@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { inject, injectable } from "inversify";
-import { AppContainer } from "../container/container";
+import { AppContainer } from "../AppContainer";
 import { IInstaller } from "../contracts/IInstaller";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Routes } from "../routes";
