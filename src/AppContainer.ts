@@ -2,7 +2,7 @@ import * as express from "express";
 import { Application } from 'express';
 import { Server } from 'http';
 import { Container } from 'inversify';
-import { IAlarmEventDispatcher } from './contracts/IAlarmEventDispatcher';
+import { IEventDispatcher } from './contracts/events/IEventDispatcher';
 import { IInstaller } from "./contracts/IInstaller";
 import { IAlarmRecordService } from './contracts/services/IAlarmRecordService';
 import { IAlarmSensorService } from './contracts/services/IAlarmSensorService';
@@ -20,7 +20,7 @@ import { AlarmSensorService } from './services/AlarmSensorService';
 import { AlarmService } from './services/AlarmService';
 import { AuthServiceProxy } from "./services/proxy/AuthServiceProxy";
 import { UserServiceProxy } from "./services/proxy/UserServiceProxy";
-import { SocketIOServer } from './event-dispatchers/SocketIOServer';
+import { SocketIOServer } from './events/SocketIOServer';
 import { IAlarmCheckerService } from "./contracts/services/IAlarmCheckerService";
 import { AlarmCheckerService } from "./services/AlarmCheckerService";
 import { AlarmCheckerController } from "./controllers/AlarmCheckerController";
@@ -58,6 +58,6 @@ AppContainer.bind<AlarmSensorController>(AlarmSensorController).toSelf();
 AppContainer.bind<AlarmCheckerController>(AlarmCheckerController).toSelf();
 
 // Event Dispatcher
-AppContainer.bind<IAlarmEventDispatcher>("IAlarmEventDispatcher").to(SocketIOServer).inSingletonScope();
+AppContainer.bind<IEventDispatcher>("IEventDispatcher").to(SocketIOServer).inSingletonScope();
 
 export { AppContainer };

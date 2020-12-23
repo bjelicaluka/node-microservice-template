@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
-import { IController } from "../contracts/IController";
+import { IController } from "../contracts/controllers/IController";
 import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
 import { SensorInfo } from "../entity/remote/SensorInfo";
 

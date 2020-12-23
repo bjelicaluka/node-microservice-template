@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { IAlarmEventDispatcher } from "../contracts/IAlarmEventDispatcher";
+import { IEventDispatcher } from "../contracts/events/IEventDispatcher";
 import { IAlarmCheckerService } from "../contracts/services/IAlarmCheckerService";
 import { IAlarmRecordService } from "../contracts/services/IAlarmRecordService";
 import { IAlarmSensorService } from "../contracts/services/IAlarmSensorService";
@@ -26,12 +26,12 @@ export class AlarmCheckerService implements IAlarmCheckerService {
 
   private alarmRecordService: IAlarmRecordService;
   private alarmSensorService: IAlarmSensorService;
-  private alarmEventDispatcher: IAlarmEventDispatcher;
+  private alarmEventDispatcher: IEventDispatcher;
 
   constructor(
     @inject("IAlarmRecordService") alarmRecordService: IAlarmRecordService,
     @inject("IAlarmSensorService") alarmSensorService: IAlarmSensorService,
-    @inject("IAlarmEventDispatcher") alarmEventDispatcher: IAlarmEventDispatcher,
+    @inject("IEventDispatcher") alarmEventDispatcher: IEventDispatcher,
   ) {
     this.alarmRecordService = alarmRecordService;
     this.alarmSensorService = alarmSensorService;
@@ -57,7 +57,7 @@ export class AlarmCheckerService implements IAlarmCheckerService {
   };
 
   private dispatchAlarm(userGroupId: string, alarmInfo: AlarmInfo): void {
-    this.alarmEventDispatcher.dispatchAlarm(userGroupId, alarmInfo);
+    this.alarmEventDispatcher.dispatchEvent(userGroupId, 'alarm', alarmInfo);
   }
 
   private async getAlarmInfo(alarm: Alarm, alarmSensor: AlarmSensor, sensor: Sensor, value: number): Promise<AlarmInfo> {

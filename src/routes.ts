@@ -1,4 +1,4 @@
-import { IController } from "./contracts/IController";
+import { IController } from "./contracts/controllers/IController";
 import { AlarmRecordRoutes } from "./routes/AlarmRecordRoutes";
 import { AlarmSensorRoutes } from "./routes/AlarmSensorRoutes";
 import { AlarmRoutes } from "./routes/AlarmRoutes";

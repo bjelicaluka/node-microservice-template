@@ -3,7 +3,7 @@ import { Server } from 'http';
 import { IInstaller } from "./contracts/IInstaller";
 import { ORM_CONFIG, RemoteServicesInfo } from "./config";
 import { AppContainer } from "./AppContainer";
-import { IAlarmEventDispatcher } from "./contracts/IAlarmEventDispatcher";
+import { IEventDispatcher } from "./contracts/events/IEventDispatcher";
 
 const PORT = 4000;
 
@@ -38,8 +38,8 @@ function installMiddleware() {
 
 // Test purposes
 function initializeServer(): void {
-  const io = AppContainer.get<IAlarmEventDispatcher>("IAlarmEventDispatcher");
-  setInterval(() => io.dispatchAlarm("22d43aba-353b-4101-8806-ed2efdd59399", "Hello."), 2000);
+  const io = AppContainer.get<IEventDispatcher>("IEventDispatcher");
+  setInterval(() => io.dispatchEvent("22d43aba-353b-4101-8806-ed2efdd59399", 'alarm', "Hello."), 2000);
 }
 
 function startServer(): void {
