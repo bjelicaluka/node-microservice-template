@@ -1,6 +1,6 @@
 import { Application } from "express";
 import { inject, injectable } from "inversify";
-import { IInstaller } from "../contracts/IInstaller";
+import { IInstaller } from "./contracts/IInstaller";
 import { AuthorizationMiddleware } from "../middleware/SecurityMiddleware";
 import { Routes } from "../routes";
 

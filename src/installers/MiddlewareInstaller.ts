@@ -1,7 +1,6 @@
-import * as bodyParser from "body-parser";
-import { Application } from "express";
+import express, { Application } from "express";
 import { inject, injectable } from "inversify";
-import { IInstaller } from "../contracts/IInstaller";
+import { IInstaller } from "./contracts/IInstaller";
 
 @injectable()
 export class MiddlewareInstaller implements IInstaller {
@@ -12,7 +11,8 @@ export class MiddlewareInstaller implements IInstaller {
     }
 
     install(): void {
-        this.app.use(bodyParser.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.json());
     }
 
 }

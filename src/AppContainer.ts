@@ -1,67 +1,46 @@
-import * as express from "express";
+import 'reflect-metadata'
+import express from "express";
 import { Application } from 'express';
 import { Server } from 'http';
 import { Container } from 'inversify';
-import { IEventDispatcher } from './contracts/events/IEventDispatcher';
-import { IInstaller } from "./contracts/IInstaller";
-import { IAlarmRecordService } from './contracts/services/IAlarmRecordService';
-import { IAlarmSensorService } from './contracts/services/IAlarmSensorService';
-import { IAlarmService } from './contracts/services/IAlarmService';
-import { IAuthService } from "./contracts/services/proxy/IAuthService";
-import { IUserService } from "./contracts/services/proxy/IUserService";
-import { AlarmController } from './controllers/AlarmController';
-import { AlarmRecordController } from './controllers/AlarmRecordController';
-import { AlarmSensorController } from './controllers/AlarmSensorController';
-import { AuthMiddlewareInstaller } from "./installers/AuthMiddlewareInstaller";
+import { IInstaller } from "./installers/contracts/IInstaller";
 import { MiddlewareInstaller } from "./installers/MiddlewareInstaller";
 import { RoutesInstaller } from "./installers/RoutesInstaller";
-import { AlarmRecordService } from './services/AlarmRecordService';
-import { AlarmSensorService } from './services/AlarmSensorService';
-import { AlarmService } from './services/AlarmService';
-import { AuthServiceProxy } from "./services/proxy/AuthServiceProxy";
-import { UserServiceProxy } from "./services/proxy/UserServiceProxy";
-import { SocketIOServer } from './events/SocketIOServer';
-import { IAlarmCheckerService } from "./contracts/services/IAlarmCheckerService";
-import { AlarmCheckerService } from "./services/AlarmCheckerService";
-import { AlarmCheckerController } from "./controllers/AlarmCheckerController";
-import { RemoteCacheService } from "./services/cache/RemoteCacheService";
-import { IRemoteCacheService } from "./contracts/services/cache/IRemoteCacheService";
-import { IEventHandler } from "./contracts/events/IEventHandler";
+import { UserServiceProxy } from "./services/implementation/proxy/UserServiceProxy";
+import { TestController } from './controllers/TestController';
+import { DocumentationInstaller } from './installers/DocumentationInstaller';
+import { DataSourceInstaller } from './installers/DataSourceInstaller';
+import { IUserService } from './services/contracts/proxy/IUserService';
+import { TestService } from './services/implementation/TestService';
+import { ITestService } from './services/contracts/ITestService';
+import { RemoteCacheInstaller } from './installers/RemoteCacheInstaller';
+import { EventDispatcherInstaller } from './installers/EventDispatcherInstaller';
 
 const AppContainer = new Container();
+
+// AppContainer
+AppContainer.bind<Container>("AppContainer").toConstantValue(AppContainer);
 
 // Application and Server
 AppContainer.bind<Application>("Application").toConstantValue(express());
 AppContainer.bind<Server>(Server).toConstantValue(new Server(AppContainer.get<Application>("Application")));
 
 // Installers
-AppContainer.bind<IInstaller>("IInstaller").to(AuthMiddlewareInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(MiddlewareInstaller);
+AppContainer.bind<IInstaller>("IInstaller").to(DocumentationInstaller);
+AppContainer.bind<IInstaller>("IInstaller").to(DataSourceInstaller);
+AppContainer.bind<IInstaller>("IInstaller").to(RemoteCacheInstaller);
+AppContainer.bind<IInstaller>("IInstaller").to(EventDispatcherInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(RoutesInstaller);
 
 // Services
-AppContainer.bind<IAlarmService>("IAlarmService").to(AlarmService).inRequestScope();
-AppContainer.bind<IAlarmRecordService>("IAlarmRecordService").to(AlarmRecordService).inRequestScope();
-AppContainer.bind<IAlarmSensorService>("IAlarmSensorService").to(AlarmSensorService).inRequestScope();
-AppContainer.bind<IAlarmCheckerService>("IAlarmCheckerService").to(AlarmCheckerService).inRequestScope();
+AppContainer.bind<ITestService>("ITestService").to(TestService).inRequestScope();
 
 // Proxy Services 
-AppContainer.bind<IAuthService>("IAuthService").to(AuthServiceProxy).inRequestScope();
 AppContainer.bind<IUserService>("IUserService").to(UserServiceProxy).inRequestScope();
 
-// Cache Services
-AppContainer.bind<IRemoteCacheService>("IRemoteCacheService").to(RemoteCacheService).inSingletonScope();
-
 // Controllers
-AppContainer.bind<AlarmController>(AlarmController).toSelf();
-AppContainer.bind<AlarmRecordController>(AlarmRecordController).toSelf();
-AppContainer.bind<AlarmSensorController>(AlarmSensorController).toSelf();
-AppContainer.bind<AlarmCheckerController>(AlarmCheckerController).toSelf();
+AppContainer.bind<TestController>(TestController).toSelf();
 
-// Event Dispatcher
-AppContainer.bind<SocketIOServer>(SocketIOServer).toSelf().inSingletonScope();
-const socketIoServerInstance = AppContainer.get(SocketIOServer);
-AppContainer.bind<IEventDispatcher>("IEventDispatcher").toConstantValue(socketIoServerInstance);
-AppContainer.bind<IEventHandler>("IEventHandler").toConstantValue(socketIoServerInstance);
 
 export { AppContainer };

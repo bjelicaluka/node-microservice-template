@@ -1,0 +1,32 @@
+version: "3"
+services:
+
+  node-service:
+    build: .
+    environment:
+      - JWT_SECRET=SECRET
+      - USER_SERVICE_URL=http://user-service:5000
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - REDIS_PASSWORD=1234
+      - NODE_ENV=production
+      - DOC_PATH=/swagger
+      - CONFIG={"database":{"type":"mysql","host":"mariadb","port":3306,"database":"database"},"redis":{"port":6379,"host":"redis"}}
+    ports: 
+      - 80:80
+
+  redis:
+    image: redis:rc-alpine
+    command: redis-server --requirepass 1234
+    volumes: 
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    ports: 
+      - 6379
+
+  mariadb:
+    image: mariadb:10.5.8-focal
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=1234
+    ports:
+      - 3306 

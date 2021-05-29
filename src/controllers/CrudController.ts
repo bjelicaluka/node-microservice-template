@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { ICrudController } from "../contracts/controllers/ICrudController";
-import { BaseEntity } from "../entity/BaseEntity";
-import { ICrudService } from "../contracts/services/ICrudService";
+import { BaseEntity } from "../model/BaseEntity";
 import { injectable } from "inversify";
+import { ICrudService } from "../services/contracts/ICrudService";
+import { ICrudController } from "./contracts/ICrudController";
 
 @injectable()
 export class CrudController implements ICrudController {
@@ -14,11 +14,11 @@ export class CrudController implements ICrudController {
     }
     
     async get(request: Request, response: Response, next: NextFunction) {
-        return this.service.get();
+        return this.service.read();
     }
 
     async getById(request: Request, response: Response, next: NextFunction) {
-        return this.service.getById(parseInt(request.params.id));
+        return this.service.tryToReadOne(parseInt(request.params.id));
     }
 
     async add(request: Request, response: Response, next: NextFunction) {

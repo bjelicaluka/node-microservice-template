@@ -1,8 +1,6 @@
-import { IController } from "./contracts/controllers/IController";
-import { AlarmRecordRoutes } from "./routes/AlarmRecordRoutes";
-import { AlarmSensorRoutes } from "./routes/AlarmSensorRoutes";
-import { AlarmRoutes } from "./routes/AlarmRoutes";
-import { AlarmCheckerRoutes } from "./routes/AlarmCheckerRoutes";
+import { IController } from "./controllers/contracts/IController";
+import { TestRoutes } from "./routes/TestRoutes"
+import { ValidationChain } from 'express-validator';
 
 export interface Routes {
     controller: IController;
@@ -14,11 +12,9 @@ interface Route {
     route: string;
     action: string;
     roles?: string[];
+    validations?: ValidationChain[];
 };
 
 export const Routes: Routes[] = [
-    AlarmRoutes,
-    AlarmSensorRoutes,
-    AlarmRecordRoutes,
-    AlarmCheckerRoutes,
+    TestRoutes,
 ];

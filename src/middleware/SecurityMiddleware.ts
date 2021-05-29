@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { UnauthorizedError } from "../error/errors/UnauthorizedError";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Socket } from "socket.io";
-import { IAuthService } from "../contracts/services/proxy/IAuthService";
-import { IUserService } from "../contracts/services/proxy/IUserService";
-import { CONFIGURATION } from "../config";
+import { CONFIGURATION, JWT_SECRET } from "../config";
 import { AppContainer } from "../AppContainer";
+import * as jwt from 'jsonwebtoken';
+import { IUserService } from "../services/contracts/proxy/IUserService";
 
 interface TokenQuery {
   token: string;
@@ -13,12 +13,25 @@ interface TokenQuery {
 
 export function AuthorizationMiddleware(roles: string[]): Function {
   return (request: Request, response: Response, next: NextFunction) => {
-    const token = request && request.headers && request.headers.authorization || "";
+    const token = request?.headers?.authorization || "";
 
     CONFIGURATION.PRODUCTION ? validateToken(token, roles, next, () => {
-      const errorHandler = ErrorHandler.getInstance();
-      const errorResponse = errorHandler.handleError(new UnauthorizedError("Invalid token."));
-      errorHandler.sendErrorResponse(errorResponse, response);
+      const errorResponse = ErrorHandler.handleError(new UnauthorizedError("Invalid token."));
+      ErrorHandler.sendErrorResponse(errorResponse, response);
+    })
+    :
+    next();
+  }
+}
+
+export function UserGroupSpecificMiddleware(roles: string[]) {
+  return (request: Request, response: Response, next: NextFunction) => {
+    const token = request?.headers?.authorization || "";
+    const userGroupId: string = request?.params?.userGroupId;
+
+    CONFIGURATION.PRODUCTION ? validateTokenUserGroup(token, userGroupId, roles, next, () => {
+      const errorResponse = ErrorHandler.handleError(new UnauthorizedError("Invalid token for the given user group id."));
+      ErrorHandler.sendErrorResponse(errorResponse, response);
     })
     :
     next();
@@ -39,15 +52,11 @@ export function SocketUserGroupSpecificMiddleware(userGroupId: string, roles: st
 };
 
 function validateToken(token: string, roles: string[], onSuccess: Function, onError: Function): void {
-  const authService: IAuthService = AppContainer.get<IAuthService>("IAuthService");
 
-  authService.validateToken(token, roles)
-    .then(() => {
-      onSuccess();
-    })
-    .catch(() => {
-      onError();
-    });
+  jwt.verify(token, JWT_SECRET as string, (err: any, user: any) => {
+    if (err) return onError();
+    onSuccess();
+  });
 
 }
 
@@ -58,7 +67,7 @@ function validateTokenUserGroup(token: string, userGroupId: string, roles: strin
     .then(() => {
       onSuccess();
     })
-    .catch(() => {
+    .catch((e) => {
       onError();
     });
 

@@ -1,78 +1,55 @@
 import { ConnectionOptions } from 'typeorm';
-import { BaseEntity } from "./entity/BaseEntity";
-import { Alarm } from "./entity/Alarm";
-import { AlarmRecord } from "./entity/AlarmRecord";
-import { AlarmSensor } from "./entity/AlarmSensor";
+import { BaseEntity } from "./model/BaseEntity";
+import { Test } from './model/Test';
+
+const config = JSON.parse(process.env.CONFIG) || '';
 
 type RouteFormatterFunction = (params: string[]) => string;
 
 interface ServicesInfo {
-  AuthService: {
-    API_URL: string;
-    TOKEN_VALIDATION_ROUTE: string;
-  };
   UserService: {
     API_URL: string;
     TOKEN_USER_GROUP_VALIDATION_ROUTE: string;
-  },
-  SensorService: {
-    API_URL: string;
-    AUTHENTICATE_ROUTE: string;
-    FETCH_SENSOR_ROUTE: RouteFormatterFunction;
-  },
+  };
 };
 
-const isProductionConfiguration: boolean = process.env.CONFIGURATION === 'production';
+export const PORT = process.env.PORT || 80;
+
+const isProductionConfiguration: boolean = process.env.NODE_ENV === 'production';
 export const CONFIGURATION = {
   PRODUCTION: isProductionConfiguration,
   DEBUG: !isProductionConfiguration,
 }
 
+export const DOC_PATH = process.env.DOC_PATH || '/swagger';
+
+export const LOGGING = true;
+export const JWT_SECRET = process.env.JWT_SECRET || 'TOKEN';
+
 export const RemoteServicesInfo: ServicesInfo = {
-  AuthService: {
-    API_URL: process.env.AUTH_SERVICE_URL || "http://bjelicaluka.live:3333/authService",
-    TOKEN_VALIDATION_ROUTE: "/Authorization/validate",
-  },
   UserService: {
-    API_URL: process.env.USER_SERVICE_URL || "http://bjelicaluka.live:3333/userService",
+    API_URL: process.env.USER_SERVICE_URL,
     TOKEN_USER_GROUP_VALIDATION_ROUTE: "/Authorization/role-in-group",
   },
-  SensorService: {
-    API_URL: process.env.SENSOR_SERVICE_URL || "http://bjelicaluka.live:3333/sensorService",
-    AUTHENTICATE_ROUTE: "/Authentication/authenticate",
-    FETCH_SENSOR_ROUTE: (params) => `/groups/${params[0]}/sensors/${params[1]}`,
-  }
 };
 
-const connectionInfo: ConnectionOptions = CONFIGURATION.DEBUG ?
-  {
-    type: "sqlite",
-    database: "../database.sql",
-  }
-  :
-  {
-    type: "mysql",
-    host: "mariadb-alarm",
-    port: 3306,
-    username: "root",
-    password: "1234",
-    database: "alarms_db",
-  }
+const connectionInfo: ConnectionOptions = {
+  ...config.database,
+  username: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD,
+}
 
 export const ORM_CONFIG: ConnectionOptions = {
   ...connectionInfo,
   synchronize: true,
   logging: false,
   entities: [
+    Test,
     BaseEntity,
-    Alarm,
-    AlarmRecord,
-    AlarmSensor,
   ]
 }
 
 export const REDIS_CONFIG = {
-  port: 6379,
-  host: 'localhost',
-  password: "1234"
+  ...config.redis,
+  password: process.env.REDIS_PASSWORD
 }

@@ -4,6 +4,9 @@
          "es5",
          "es6"
       ],
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "skipLibCheck": true,
       "target": "es5",
       "module": "commonjs",
       "moduleResolution": "node",
