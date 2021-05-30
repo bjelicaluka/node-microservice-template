@@ -1,0 +1,233 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-url-config
+data:
+  user-service-url: http://user-service:80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-service-config
+data:
+  production-config: |-
+    {
+      "database": {
+        "type": "mysql",
+        "host": "mariadb",
+        "port": 3306,
+        "database": "database"
+      },
+      "redis": {
+        "port": 6379,
+        "host": "node-service-redis"
+      }
+    }
+  redis.conf: |-
+    requirepass "1234"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: node-service-secrets
+type: Opaque
+data:
+  db-user: cm9vdA==
+  db-password: MTIzNA==
+  redis-password: MTIzNA==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-secrets
+type: Opaque
+data:
+  init-root-password: MTIzNA==
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pvc
+spec:
+  # Change to the existing storage class
+  storageClassName: dynamic-storage
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.5.8-focal
+        env:
+          - name: MYSQL_DATABASE
+            value: database
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: init-root-password
+        volumeMounts:
+          - name: data-volume
+            mountPath: /var/lib/mysql
+        resources:
+          requests:
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3306
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+spec:
+  selector:
+    app: mariadb
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-service-redis
+spec:
+  selector:
+    matchLabels:
+      app: node-service-redis
+  template:
+    metadata:
+      labels:
+        app: node-service-redis
+    spec:
+      containers:
+      - name: node-service-redis
+        image: redis:rc-alpine
+        command:
+          - redis-server
+          - "/redis-config/redis.conf"
+          - "--appendonly"
+          - "yes"
+        volumeMounts:
+          - name: config-volume
+            mountPath: /redis-config
+        resources:
+          requests:
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 6379
+      volumes:
+        - name: config-volume
+          configMap:
+            name: node-service-config
+            items:
+              - key: redis.conf
+                path: redis.conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-service-redis
+spec:
+  selector:
+    app: node-service-redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-service
+  template:
+    metadata:
+      labels:
+        app: node-service
+    spec:
+      containers:
+      - name: node-service
+        # Change image name to the existing one in a remote or local registry
+        image: <image-name>
+        imagePullPolicy: Always
+        env:
+          - name: NODE_ENV
+            value: production
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: jwt-secret
+                key: jwt-secret-value
+          - name: USER_SERVICE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: service-url-config
+                key: user-service-url
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: node-service-secrets
+                key: db-user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: node-service-secrets
+                key: db-password
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: node-service-secrets
+                key: redis-password
+          - name: CONFIG
+            valueFrom:
+              configMapKeyRef:
+                key: production-config
+                name: node-service-config
+        resources:
+          requests:
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-service
+spec:
+  selector:
+    app: node-service
+  ports:
+  - port: 80
+    targetPort: 80

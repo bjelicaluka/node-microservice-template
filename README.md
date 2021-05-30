@@ -1,5 +1,8 @@
 # Project template for future microservices in Node.js.
 
+### Version: <strong>`1.0.1`</strong>
+<br/>
+
 <h1>Steps to run this project in development environment:</h1>
 
 1. Run `npm i` command
@@ -134,6 +137,19 @@ docker-compose up
 docker compose up
 # run in a detached mode
 docker compose up -d
+```
+
+<h1>Steps to run inside a Kubernetes cluster using kubectl:</h1>
+
+1. Configure kubernetes.yml to suit the environment needs
+2. Run the following command(s)
+```bash
+# run it inside the default namespace
+kubectl apply -f kubernetes.yml
+
+# run it inside a separate namespace
+kubectl create namespace <namespace-name>
+kubectl apply -f kubernetes.yml -n <namespace-name>
 ```
 
 <h1>Used environment variables</h1>

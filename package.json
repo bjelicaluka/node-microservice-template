@@ -1,6 +1,6 @@
 {
    "name": "node-microservice-template",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "description": "Project template for future microservices in Node.js.",
    "devDependencies": {
       "@types/chai": "^4.2.16",
