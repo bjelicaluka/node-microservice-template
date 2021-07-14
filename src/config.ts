@@ -21,7 +21,7 @@ export const CONFIGURATION = {
   DEBUG: !isProductionConfiguration,
 }
 
-export const DOC_PATH = process.env.DOC_PATH || '/swagger';
+export const DOC_PATH = process.env.DOC_PATH ? `/${process.env.DOC_PATH}` : '/swagger';
 
 export const LOGGING = true;
 export const JWT_SECRET = process.env.JWT_SECRET || 'TOKEN';
