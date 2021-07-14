@@ -9,7 +9,7 @@
 2. Export required env vars
 ```bash
 export NODE_ENV='development'
-export DOC_PATH='/swagger'
+export DOC_PATH='swagger'
 export JWT_SECRET='not so super secret content'
 export USER_SERVICE_URL='http://local-user-service-url'
 export DB_USER='root'
@@ -52,7 +52,7 @@ export CONFIG='{
 4. Export required env vars
 ```bash
 export NODE_ENV='production'
-export DOC_PATH='/swagger'
+export DOC_PATH='swagger'
 export JWT_SECRET='super secret content'
 export USER_SERVICE_URL='http://user-service-url'
 export DB_USER='admin'
@@ -116,7 +116,7 @@ export CONFIG='{
 ```bash
 docker run -dp <port>:80 \
   -e NODE_ENV='production' \
-  -e DOC_PATH='/swagger' \
+  -e DOC_PATH='swagger' \
   -e JWT_SECRET='super secret content' \
   -e USER_SERVICE_URL='http://user-service-url' \
   -e DB_USER='root' \
@@ -158,7 +158,7 @@ kubectl apply -f kubernetes.yml -n <namespace-name>
 | :--- | :--- | :--- | :--- |
 | <b>PORT | HTTP server listen port | `3000` | `80` |
 | <b>NODE_ENV | Node configuration environment | `production`/`development` | `development` |
-| <b>DOC_PATH | Path of Swagger API doc | `/api-docs` | `/swagger` |
+| <b>DOC_PATH | Path of Swagger API doc | `api-docs` | `swagger` |
 | <b>JWT_SECRET | JWT Secret | `5IUSD123JKJASA` | `TOKEN` |
 | <b>USER_SERVICE_URL | URL of remote service | `http://url-to-service` | `null` |
 | <b>DB_USER | Database user | `admin` | `root` |
