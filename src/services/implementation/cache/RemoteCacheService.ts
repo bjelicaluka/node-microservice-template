@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { RedisClient } from 'redis';
 import { IRemoteCacheService } from '../../contracts/cache/IRemoteCacheService';
 
-const EXPIRATION_TIME = 30; // minute
+const DEFAULT_EXPIRATION_TIME = 30; // minute
 
 @injectable()
 export class RemoteCacheService implements IRemoteCacheService {
@@ -18,9 +18,9 @@ export class RemoteCacheService implements IRemoteCacheService {
     }));
   }
   
-  cacheValue(key: string, value: any): void {
+  cacheValue(key: string, value: any, expiration: number = DEFAULT_EXPIRATION_TIME): void {
     this.client.set(key, JSON.stringify(value), () => {
-      this.client.expire(key, EXPIRATION_TIME);
+      this.client.expire(key, expiration);
     });
   }
   
