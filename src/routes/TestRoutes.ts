@@ -10,7 +10,7 @@ export const TestRoutes: Routes = {
    * GET /tests
    * @tags Test
    * @summary Get all tests
-   * @returns {array<Test>} 200 - An array of test entities
+   * @return {array<Test>} 200 - An array of test entities
    */
     {
       method: "get",
@@ -23,8 +23,8 @@ export const TestRoutes: Routes = {
    * @tags Test
    * @summary Get one test
    * @param {number} id.path - id
-   * @returns {Test} 200 - A single test entity
-   * @returns {Error} 404 - Entity with the given id not found
+   * @return {Test} 200 - A single test entity
+   * @return {Error} 404 - Entity with the given id not found
    */
     {
       method: "get",
@@ -36,8 +36,8 @@ export const TestRoutes: Routes = {
    * @tags Test
    * @summary Add new test
    * @param {Test} request.body.required - Test
-   * @returns {Test} 200 - Created test
-   * @returns {Error} 400 - Invalid data or entity with the given id already exists
+   * @return {Test} 200 - Created test
+   * @return {Error} 400 - Invalid data or entity with the given id already exists
    */
     {
       method: "post",
@@ -57,9 +57,9 @@ export const TestRoutes: Routes = {
    * @summary Update existing test
    * @param {number} id.path - id
    * @param {Test} request.body.required - Test
-   * @returns {Test} 200 - Updated test
-   * @returns {Error} 404 - Entity with the given id not found
-   * @returns {Error} 400 - Invalid Entity
+   * @return {Test} 200 - Updated test
+   * @return {Error} 404 - Entity with the given id not found
+   * @return {Error} 400 - Invalid Entity
    */
     {
       method: "put",
@@ -78,8 +78,8 @@ export const TestRoutes: Routes = {
    * @tags Test
    * @summary Delete existing test
    * @param {number} id.path - id
-   * @returns {Test} 200 - Deleted test
-   * @returns {Error} 404 - Entity with the given id not found
+   * @return {Test} 200 - Deleted test
+   * @return {Error} 404 - Entity with the given id not found
    */
     {
       method: "delete",
