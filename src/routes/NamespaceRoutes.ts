@@ -12,7 +12,7 @@ export const NamespaceRoutes: Routes = {
   routes: [
     /**
    * POST /groups/{userGroupId}/namespaces
-   * @tags NamespaceInfo
+   * @tags Namespaces
    * @summary Creates a new live data namespace
    * @param {string} userGroupId.path.required - User Group ID
    * @param {NamespaceInfo} request.body.required - NamespaceInfo
