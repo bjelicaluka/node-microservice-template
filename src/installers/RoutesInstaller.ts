@@ -17,7 +17,7 @@ export class RoutesInstaller implements IInstaller {
   install(): void {
     Routes.forEach(routes => {
       routes.routes.forEach(route => {
-        (this.app as any)[route.method](route.route, ...(route.validations ? [route.validations] : []), (req: Request, res: Response, next: Function) => {
+        (this.app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
 
           const errors = validationResult(req);
           if (!errors.isEmpty()) {

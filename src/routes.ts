@@ -7,11 +7,12 @@ export interface Routes {
     routes: Route[];
 }
 
-interface Route {
+export interface Route {
     method: string;
     route: string;
     action: string;
     roles?: string[];
+    middleware?: Function[];
     validations?: ValidationChain[];
 };
 
