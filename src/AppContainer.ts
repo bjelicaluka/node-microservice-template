@@ -14,8 +14,9 @@ import { IUserService } from './services/contracts/proxy/IUserService';
 import { TestService } from './services/implementation/TestService';
 import { ITestService } from './services/contracts/ITestService';
 import { RemoteCacheInstaller } from './installers/RemoteCacheInstaller';
-import { EventDispatcherInstaller } from './installers/EventDispatcherInstaller';
 import { RequestValidationInstaller } from './installers/RequestValidationInstaller';
+import { NamespaceController } from './controllers/NamespaceController';
+import { EventsInstaller } from './installers/EventsInstaller';
 
 const AppContainer = new Container();
 
@@ -32,7 +33,7 @@ AppContainer.bind<IInstaller>("IInstaller").to(RequestValidationInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(DocumentationInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(DataSourceInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(RemoteCacheInstaller);
-AppContainer.bind<IInstaller>("IInstaller").to(EventDispatcherInstaller);
+AppContainer.bind<IInstaller>("IInstaller").to(EventsInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(RoutesInstaller);
 
 // Services
@@ -43,6 +44,6 @@ AppContainer.bind<IUserService>("IUserService").to(UserServiceProxy).inRequestSc
 
 // Controllers
 AppContainer.bind<TestController>(TestController).toSelf();
-
+AppContainer.bind<NamespaceController>(NamespaceController).toSelf();
 
 export { AppContainer };
