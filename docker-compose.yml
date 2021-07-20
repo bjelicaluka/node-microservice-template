@@ -10,7 +10,13 @@ services:
       - DB_PASSWORD=1234
       - REDIS_PASSWORD=1234
       - NODE_ENV=production
-      - DOC_PATH=/swagger
+      - DOC_PATH=explorer
+      - EXPOSE_SWAGGER_UI=false
+      - EXPOSE_API_DOCS=true
+      - API_PROTOCOL=https
+      - API_HOSTNAME=node-service.com
+      - API_PORT=80
+      - API_PREFIX=service
       - CONFIG={"database":{"type":"mysql","host":"mariadb","port":3306,"database":"database"},"redis":{"port":6379,"host":"redis"}}
     ports: 
       - 80:80
