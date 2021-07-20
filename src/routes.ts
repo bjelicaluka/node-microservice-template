@@ -1,6 +1,7 @@
 import { IController } from "./controllers/contracts/IController";
 import { TestRoutes } from "./routes/TestRoutes"
 import { ValidationChain } from 'express-validator';
+import { NamespaceRoutes } from "./routes/NamespaceRoutes";
 
 export interface Routes {
     controller: IController;
@@ -18,4 +19,5 @@ export interface Route {
 
 export const Routes: Routes[] = [
     TestRoutes,
+    NamespaceRoutes,
 ];

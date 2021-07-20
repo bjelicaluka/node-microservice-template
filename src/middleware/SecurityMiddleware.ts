@@ -3,15 +3,13 @@ import { UnauthorizedError } from "../error/errors/UnauthorizedError";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Socket } from "socket.io";
 import { CONFIGURATION, JWT_SECRET } from "../config";
-import { AppContainer } from "../AppContainer";
 import * as jwt from 'jsonwebtoken';
-import { IUserService } from "../services/contracts/proxy/IUserService";
 
 interface TokenQuery {
   token: string;
 }
 
-export function AuthorizationMiddleware(roles: string[]): Function {
+export function AuthorizationMiddleware(roles?: string[]): Function {
   return (request: Request, response: Response, next: NextFunction) => {
     const token = request?.headers?.authorization || "";
 
@@ -24,9 +22,9 @@ export function AuthorizationMiddleware(roles: string[]): Function {
   }
 }
 
-export function UserGroupSpecificMiddleware(roles: string[]) {
+export function UserGroupSpecificMiddleware(roles?: string[]) {
   return (request: Request, response: Response, next: NextFunction) => {
-    const token = request?.headers?.authorization || "";
+    const token: string = request?.headers?.authorization?.split(' ')[1] || "";
     const userGroupId: string = request?.params?.userGroupId;
 
     CONFIGURATION.PRODUCTION ? validateTokenUserGroup(token, userGroupId, roles, next, () => {
@@ -38,7 +36,7 @@ export function UserGroupSpecificMiddleware(roles: string[]) {
   }
 }
 
-export function SocketUserGroupSpecificMiddleware(userGroupId: string, roles: string[]) {
+export function SocketUserGroupSpecificMiddleware(userGroupId: string, roles?: string[]) {
   return (socket: Socket, next: Function) => {
     const query = socket.handshake.query as TokenQuery;
     const token: string = query.token || "";
@@ -53,22 +51,20 @@ export function SocketUserGroupSpecificMiddleware(userGroupId: string, roles: st
 
 function validateToken(token: string, roles: string[], onSuccess: Function, onError: Function): void {
 
-  jwt.verify(token, JWT_SECRET as string, (err: any, user: any) => {
+  jwt.verify(token, JWT_SECRET as string, (err: any, info: any) => {
     if (err) return onError();
+    if (!!roles && roles.findIndex(role => info.role === role) === -1) return onError();
     onSuccess();
   });
 
 }
 
 function validateTokenUserGroup(token: string, userGroupId: string, roles: string[], onSuccess: Function, onError: Function): void {
-  const userService: IUserService = AppContainer.get<IUserService>("IUserService");
-
-  userService.validateTokenUserGroup(token, userGroupId, roles)
-    .then(() => {
-      onSuccess();
-    })
-    .catch((e) => {
-      onError();
-    });
+  jwt.verify(token, JWT_SECRET as string, (err: any, info: any) => {
+    if (err) return onError();
+    if (!!roles && roles.findIndex(role => info.role === role) === -1) return onError();
+    if (info.GroupId !== userGroupId) return onError();
+    onSuccess();
+  });
 
 }
