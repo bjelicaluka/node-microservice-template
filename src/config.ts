@@ -53,7 +53,7 @@ export const REDIS_CONFIG = {
   ...config.redis,
   password: process.env.REDIS_PASSWORD
 }
-// TODO: add to readme
+
 export const API_INFO = {
   API_PROTOCOL: process.env.API_PROTOCOL || 'http',
   API_HOSTNAME: process.env.API_HOSTNAME || 'localhost',
