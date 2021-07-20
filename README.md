@@ -9,12 +9,18 @@
 2. Export required env vars
 ```bash
 export NODE_ENV='development'
-export DOC_PATH='swagger'
 export JWT_SECRET='not so super secret content'
 export USER_SERVICE_URL='http://local-user-service-url'
 export DB_USER='root'
 export DB_PASSWORD='1234'
 export REDIS_PASSWORD='1234'
+export DOC_PATH='explorer'
+export EXPOSE_SWAGGER_UI='true'
+export EXPOSE_API_DOCS='true'
+export API_PROTOCOL='http'
+export API_HOSTNAME='localhost'
+export API_PORT='80'
+export API_PREFIX=''
 ```
 3. Add the following content to `CONFIG` env var for the development environment
 ```json
@@ -52,12 +58,18 @@ export CONFIG='{
 4. Export required env vars
 ```bash
 export NODE_ENV='production'
-export DOC_PATH='swagger'
 export JWT_SECRET='super secret content'
 export USER_SERVICE_URL='http://user-service-url'
 export DB_USER='admin'
 export DB_PASSWORD='MDBP@sWoRd'
 export REDIS_PASSWORD='R3d1sP@sWoRd'
+export DOC_PATH='explorer'
+export EXPOSE_SWAGGER_UI='false'
+export EXPOSE_API_DOCS='true'
+export API_PROTOCOL='https'
+export API_HOSTNAME='node-service.com'
+export API_PORT='80'
+export API_PREFIX='service'
 ```
 5. Add the following content to `CONFIG` env var for the production environment
 ```json
@@ -116,13 +128,19 @@ export CONFIG='{
 ```bash
 docker run -dp <port>:80 \
   -e NODE_ENV='production' \
-  -e DOC_PATH='swagger' \
   -e JWT_SECRET='super secret content' \
   -e USER_SERVICE_URL='http://user-service-url' \
   -e DB_USER='root' \
   -e DB_PASSWORD='1234' \
   -e REDIS_PASSWORD='1234' \
   -e CONFIG \
+  -e DOC_PATH='explorer' \
+  -e EXPOSE_SWAGGER_UI='false' \
+  -e EXPOSE_API_DOCS='true' \
+  -e API_PROTOCOL='https' \
+  -e API_HOSTNAME='node-service.com' \
+  -e API_PORT='80' \
+  -e API_PREFIX='service' \
   <image>:<tag>
 ```
 
@@ -158,12 +176,16 @@ kubectl apply -f kubernetes.yml -n <namespace-name>
 | :--- | :--- | :--- | :--- |
 | <b>PORT | HTTP server listen port | `3000` | `80` |
 | <b>NODE_ENV | Node configuration environment | `production`/`development` | `development` |
-| <b>DOC_PATH | Path of Swagger API doc | `api-docs` | `swagger` |
+| <b>DOC_PATH | Path of Swagger API doc | `api-docs-ui` | `explorer` |
 | <b>JWT_SECRET | JWT Secret | `5IUSD123JKJASA` | `TOKEN` |
 | <b>USER_SERVICE_URL | URL of remote service | `http://url-to-service` | `null` |
 | <b>DB_USER | Database user | `admin` | `root` |
 | <b>DB_PASSWORD | Database password | `pwd123` | `null` |
 | <b>REDIS_PASSWORD | Redis password | `redpwd123` | `null` |
+| <b>API_PROTOCOL | Protocol of API server | `https` | `http` |
+| <b>API_HOSTNAME | Hostname of API server | `node-service.com` | `localhost` |
+| <b>API_PORT | Port of API server | `3000` | `80` |
+| <b>API_PREFIX | Path prefix of API server | `nodeService` | `/` |
 | <b>CONFIG | Additional configuration in JSON string format | `{database: {...}, redis: {...}}` | `null` |
 
 <br/>
@@ -177,6 +199,7 @@ kubectl apply -f kubernetes.yml -n <namespace-name>
 | <b>so<span>cket.io</span> | WebSocket lib for JavaScript.| https://socket.io/ |
 | <b>Redis | JavaScript client lib for Redis. | https://redis.io/ |
 | <b>Express | Node.js HTTP server. | https://expressjs.com/ |
+| <b>Swagger JSDoc | API doc generator. | https://brikev.github.io/express-jsdoc-swagger-docs/ |
 | <b>Mocha | JavaScript testing library. | https://mochajs.org/ |
 | <b>Chai | JavaScript assertion library. | https://www.chaijs.com/ |
 | <b>Sinon | Standalone test spies, stubs and mocks for JavaScript. | https://sinonjs.org/ |
