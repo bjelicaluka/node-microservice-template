@@ -212,6 +212,12 @@ spec:
               configMapKeyRef:
                 key: production-config
                 name: node-service-config
+          - name: EXPOSE_API_DOCS
+            value: 'true'
+          - name: API_PROTOCOL
+            value: http
+          - name: API_HOSTNAME
+            value: node-service.com
         resources:
           requests:
             cpu: "50m"

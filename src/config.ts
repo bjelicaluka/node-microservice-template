@@ -2,7 +2,7 @@ import { ConnectionOptions } from 'typeorm';
 import { BaseEntity } from "./model/BaseEntity";
 import { Test } from './model/Test';
 
-const config = JSON.parse(process.env.CONFIG) || '';
+const config = JSON.parse(process.env.CONFIG);
 
 type RouteFormatterFunction = (params: string[]) => string;
 
@@ -21,7 +21,7 @@ export const CONFIGURATION = {
   DEBUG: !isProductionConfiguration,
 }
 
-export const DOC_PATH = process.env.DOC_PATH ? `/${process.env.DOC_PATH}` : '/swagger';
+export const DOC_PATH = process.env.DOC_PATH ? `/${process.env.DOC_PATH}` : '/explorer';
 
 export const LOGGING = true;
 export const JWT_SECRET = process.env.JWT_SECRET || 'TOKEN';
@@ -52,4 +52,16 @@ export const ORM_CONFIG: ConnectionOptions = {
 export const REDIS_CONFIG = {
   ...config.redis,
   password: process.env.REDIS_PASSWORD
+}
+
+export const API_INFO = {
+  API_PROTOCOL: process.env.API_PROTOCOL || 'http',
+  API_HOSTNAME: process.env.API_HOSTNAME || 'localhost',
+  API_PORT: process.env.API_PORT || 80,
+  API_PREFIX: process.env.API_PREFIX ? `/${process.env.API_PREFIX}` : '/'
+}
+
+export const DOC_INFO = {
+  EXPOSE_SWAGGER_UI: process.env.EXPOSE_SWAGGER_UI === 'true',
+  EXPOSE_API_DOCS: process.env.EXPOSE_API_DOCS === 'true',
 }

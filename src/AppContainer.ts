@@ -15,6 +15,7 @@ import { TestService } from './services/implementation/TestService';
 import { ITestService } from './services/contracts/ITestService';
 import { RemoteCacheInstaller } from './installers/RemoteCacheInstaller';
 import { EventDispatcherInstaller } from './installers/EventDispatcherInstaller';
+import { RequestValidationInstaller } from './installers/RequestValidationInstaller';
 
 const AppContainer = new Container();
 
@@ -27,6 +28,7 @@ AppContainer.bind<Server>(Server).toConstantValue(new Server(AppContainer.get<Ap
 
 // Installers
 AppContainer.bind<IInstaller>("IInstaller").to(MiddlewareInstaller);
+AppContainer.bind<IInstaller>("IInstaller").to(RequestValidationInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(DocumentationInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(DataSourceInstaller);
 AppContainer.bind<IInstaller>("IInstaller").to(RemoteCacheInstaller);

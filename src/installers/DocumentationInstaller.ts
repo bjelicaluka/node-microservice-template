@@ -3,7 +3,7 @@ import { Application } from "express";
 import expressJSDocSwagger, {Options} from 'express-jsdoc-swagger'
 import { inject, injectable } from "inversify";
 import { IInstaller } from "./contracts/IInstaller";
-import { DOC_PATH } from "../config";
+import { API_INFO, DOC_INFO, DOC_PATH } from '../config';
 
 /**
  * Error
@@ -13,17 +13,14 @@ import { DOC_PATH } from "../config";
 
 const options: Options = {
     info: {
-      version: '1.0.0',
+      version: 'v1',
       title: 'Node Microservice Template',
-      description: 'Description',
-      license: {
-        name: 'MIT',
-      },
+      description: '',
     },
     security: {
-      BasicAuth: {
+      BearerAuth: {
         type: 'http',
-        scheme: 'basic',
+        scheme: 'bearer',
       },
     },
     baseDir: path.resolve(__dirname, '../'),
@@ -31,12 +28,13 @@ const options: Options = {
     filesPattern: ['./**/*.*s'],
     // URL where SwaggerUI will be rendered
     swaggerUIPath: DOC_PATH,
+    servers: [{url: `${API_INFO.API_PROTOCOL}://${API_INFO.API_HOSTNAME}:${API_INFO.API_PORT}${API_INFO.API_PREFIX}`, description: ''}],
     // Expose OpenAPI UI
-    exposeSwaggerUI: true,
+    exposeSwaggerUI: DOC_INFO.EXPOSE_SWAGGER_UI,
     // Expose Open API JSON Docs documentation in `apiDocsPath` path.
-    exposeApiDocs: false,
+    exposeApiDocs: DOC_INFO.EXPOSE_API_DOCS,
     // Open API JSON Docs endpoint.
-    apiDocsPath: DOC_PATH,
+    apiDocsPath: '/swagger/v1/swagger.json',
     // Set non-required fields as nullable by default
     notRequiredAsNullable: false,
     // You can customize your UI options.

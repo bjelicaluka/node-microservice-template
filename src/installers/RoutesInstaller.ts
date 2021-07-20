@@ -4,7 +4,6 @@ import { AppContainer } from "../AppContainer";
 import { IInstaller } from "./contracts/IInstaller";
 import { ErrorHandler } from "../error/ErrorHandler";
 import { Routes } from "../routes";
-import { validationResult } from 'express-validator';
 
 @injectable()
 export class RoutesInstaller implements IInstaller {
@@ -17,12 +16,7 @@ export class RoutesInstaller implements IInstaller {
   install(): void {
     Routes.forEach(routes => {
       routes.routes.forEach(route => {
-        (this.app as any)[route.method](route.route, ...(route.validations ? [route.validations] : []), (req: Request, res: Response, next: Function) => {
-
-          const errors = validationResult(req);
-          if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() }).send();
-          }
+        (this.app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
 
           const result = (AppContainer.resolve(routes.controller as any))[route.action](req, res, next);
           if (result instanceof Promise) {
