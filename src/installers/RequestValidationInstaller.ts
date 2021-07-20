@@ -1,7 +1,8 @@
-import { Application } from "express";
+import { Application, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { Route, Routes } from "../routes";
 import { IInstaller } from "./contracts/IInstaller";
+import { validationResult } from "express-validator";
 
 @injectable()
 export class RequestValidationInstaller implements IInstaller {
@@ -20,7 +21,13 @@ export class RequestValidationInstaller implements IInstaller {
     }
 
     private useValidations = (route: Route) => (validation: Function) => {
-        this.app[route.method](route.route, validation)
+        this.app[route.method](route.route, validation, (req: Request, res: Response, next: Function) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() }).send();
+            }
+            next();
+        })
     }
 
 }
